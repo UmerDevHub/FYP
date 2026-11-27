@@ -4,26 +4,26 @@ Claude reads this file at the start of every session and updates it at the end o
 Keep each line short. Newest slice on top inside each section.
 
 ## Now
-- Current slice: S0 (in progress on Umer's laptop)
-- Next step: Umer creates the two databases and apps/api/.env, commits and pushes; Habib does the fresh-clone check.
+- Current slice: S0 (in progress)
+- Next step: Umer creates vehicle360_dev, vehicle360_test and apps/api/.env; then commit, push and merge; then Habib runs S0-13 (fresh clone).
 
 ## Done
-- S0 (Umer's laptop): pack layout in place; npm test, lint and format pass; npm run dev shows "Vehicle 360".
-
-## Versions (S0, 28 November 2026)
-- Node 24.12.0, npm 11.6.2, PostgreSQL 18 (Umer's laptop).
-- express 5.3.0, react 19.3.1, vite 8.4.0, @vitejs/plugin-react 6.3.0, vitest 5.1.2, supertest 7.3.2.
-- eslint 10.16.0, prettier 3.10.1, concurrently 10.0.7.
+- S0 in progress: pack layout, empty API with /api/health on port 3100, one web page, shared LIMITS; npm test, lint and format pass on Umer's laptop.
 
 ## Decisions
 Write what was decided and why, in one line each. Mark the source: SRDS, Proposal, or Assumption.
+- S0: versions from package-lock.json: Node 24.12.0 (.nvmrc 24), express 5.3.0, vite 8.4.0, react 19.3.1, react-router 8.5.3, tailwindcss 4.3.5, vitest 5.1.2 (Proposal).
+- S0: PostgreSQL 18 on Umer's laptop; the slice was tested with 16 (Proposal).
+- S0: the API runs on port 3100, because port 3000 is used by another project on Umer's laptop; prompt E-03 says 3000, use 3100 (Proposal).
+- S0: LIMITS: 7 days to arrive (A-03), 4 inspection photos (A-06), 5 failed logins (A-18) (SRDS).
 - S0: the old FastAPI service is saved on branch archive/python-service and removed; not in the 35% (Proposal).
 - S0: Docker files removed; development uses local PostgreSQL (Proposal).
 - S0: the 19 generic skills removed; only the 15 Vehicle 360 skills stay (Proposal).
 - S0: concurrently starts the API and the web app together; it is not on the approved library list (Proposal).
+- S0: ESLint uses the globals package so process and document are known names; no other ESLint plugin (Proposal).
 - S0: no dotenv; Node 24 reads apps/api/.env with --env-file-if-exists (Proposal).
 - S0: Vite proxies /api to the API in development, so no CORS rule is needed yet (Proposal).
-- S0: migrate, seed, demo:reset and job:expire are placeholders until S1 and S8 (Assumption).
+- S0: migrate, seed, demo:reset and job:expire call the API scripts with --if-present; S1 and S8 add them (Proposal).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
@@ -38,4 +38,4 @@ Every exception must be written here so that it stays an exception.
 - (nothing yet)
 
 ## Notes for the final report
-- (nothing yet)
+- S0: Express 5 passes a start-up error such as a port in use to the listen callback; ignoring it made the API stop without a message. server.js now throws it.
