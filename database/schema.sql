@@ -1,2 +1,0 @@
--- FYP Database Schema
--- Place your production schema, indexes, and tables here:
