@@ -1,10 +1,16 @@
 {
-  "name": "@vehicle360/shared",
+  "name": "@v360/shared",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "exports": {
     "./constants": "./src/constants.js",
     "./schemas": "./src/schemas.js"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^5.1.2"
   }
 }

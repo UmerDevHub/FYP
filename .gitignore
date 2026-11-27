@@ -1,71 +1,31 @@
 # Dependencies
 node_modules/
-.pnp
-.pnp.js
 
-# Python virtual environment & cache
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv/
-ENV/
-build/
-develop-eggs/
+# Build output and test coverage
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Testing & Coverage
+build/
 coverage/
-.nyc_output/
-.coverage
-htmlcov/
-.pytest_cache/
 
-# Production builds
-dist/
-build/
-
-# Environment variables
+# Environment variables: real values stay on each laptop
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+
+# Uploaded files (stored outside Git)
+uploads/
+
+# Personal Claude notes
+CLAUDE.local.md
 
 # Logs
 logs/
 *.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# Database & Docker storage
-postgres_data/
-
-# IDE / Editor config
+# Editor and system files
 .vscode/
 .idea/
 *.swp
 *.swo
 .DS_Store
-
-# Vehicle 360
-uploads/
-CLAUDE.local.md
+Thumbs.db
