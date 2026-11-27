@@ -1,88 +1,64 @@
-# Clean Enterprise Full-Stack Architecture
-### React 18 + Node.js (Express) + Python FastAPI + PostgreSQL
+# Vehicle 360
 
-A clean, modular starter architecture ready for your custom logic and models.
+A multi-branch car dealership system for AK Motors. Final year project, COMSATS University Islamabad, Wah Campus.
+Built by Umer Nisar (server) and Habib Ullah (screens). Supervisor: Ms. Samia Zafar.
 
----
+This first part builds the 35% of the system described in `docs/srds-35.md`, plus login and accounts.
 
-## 📁 Architecture Directory Structure
+## What you need
 
-```text
-FYP/
-├── docker-compose.yml              # PostgreSQL + services container orchestration
-├── package.json                    # Root scripts (run all services concurrently)
-├── .env                            # Environment variables configuration
-├── .env.example                    # Environment template
-├── .gitignore                      # Git ignore rules for node_modules, venv, dist
-├── README.md                       # Setup & architecture guide
-│
-├── database/                       # Database initialization
-│   ├── init.sql                   # Auto-executed script when Docker launches
-│   └── schema.sql                 # Put your CREATE TABLE and index queries here
-│
-├── client/                         # Frontend (React 18 + Vite)
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── .env
-│   ├── index.html
-│   └── src/
-│       ├── main.jsx
-│       ├── App.jsx                # Clean starter root component
-│       ├── index.css              # Base CSS reset
-│       ├── components/            # Put your UI components here (.gitkeep)
-│       ├── pages/                 # Put your page views here (.gitkeep)
-│       ├── hooks/                 # Put custom React hooks here (.gitkeep)
-│       ├── context/               # Put React Context state here (.gitkeep)
-│       ├── services/
-│       │   └── api.js             # Base Axios instances (Node & FastAPI with token interceptor)
-│       └── utils/                 # Utility helpers (.gitkeep)
-│
-├── server-node/                    # Node.js API Service (Express.js)
-│   ├── package.json
-│   ├── .env
-│   └── src/
-│       ├── index.js               # Clean Express entry point & middleware
-│       ├── config/
-│       │   └── db.js              # PostgreSQL connection pool (pg)
-│       ├── controllers/           # Put your controllers here (.gitkeep)
-│       ├── routes/
-│       │   └── healthRoutes.js    # Minimal /health endpoint
-│       ├── middleware/
-│       │   └── errorHandler.js    # Global error & 404 handler
-│       ├── services/              # Put your business logic services here (.gitkeep)
-│       ├── models/                # Put your data models/queries here (.gitkeep)
-│       ├── validators/            # Put input validation here (.gitkeep)
-│       └── utils/                 # Put helper functions here (.gitkeep)
-│
-└── server-python/                  # Python FastAPI Service
-    ├── requirements.txt
-    ├── venv/                      # Pre-configured Python virtual environment
-    ├── run.py                     # Uvicorn development launcher
-    ├── .env
-    └── app/
-        ├── __init__.py
-        ├── main.py                # Clean FastAPI app & CORS setup
-        ├── config.py              # Pydantic BaseSettings
-        ├── database.py            # Clean SQLAlchemy engine, session maker & get_db
-        ├── routers/
-        │   ├── __init__.py
-        │   └── health.py          # Minimal /health endpoint
-        ├── models/                # Put your SQLAlchemy models here (.gitkeep)
-        ├── schemas/               # Put your Pydantic schemas here (.gitkeep)
-        └── services/              # Put your ML/AI or compute services here (.gitkeep)
+- Node.js 24 (the version is in `.nvmrc`). Check with `node -v`.
+- Git.
+- PostgreSQL 16 or newer, running on your laptop.
+
+## Install
+
+```
+npm install
 ```
 
----
+## Set up the databases
 
-## 🚀 Running the Project
+You need two databases: one for development and one for tests. The test database name must end in `_test`.
 
-```bash
-# Start all 3 services concurrently (Node: 5000, FastAPI: 8000, React: 3000)
+1. Open a terminal and run these two commands. Type your PostgreSQL password when asked.
+   ```
+   & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360
+   & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360_test
+   ```
+   Change `18` to your PostgreSQL version.
+2. Copy `apps/api/.env.example` to `apps/api/.env`.
+3. In `apps/api/.env`, replace `CHANGE_ME` with your PostgreSQL password. Never commit this file.
+
+The API does not connect to the database yet. That starts in slice S1.
+
+## Run
+
+```
 npm run dev
-
-# Or run individual services:
-npm run dev:client    # React Frontend
-npm run dev:node      # Node.js Backend
-npm run dev:python    # FastAPI Backend
-npm run db:up         # PostgreSQL Docker container
 ```
+
+- Web app: http://localhost:5173
+- API: http://localhost:3000/api/health
+
+`npm run dev:api` and `npm run dev:web` start one part.
+
+## Test and check
+
+```
+npm test
+npm run lint
+npm run format
+```
+
+## Folders
+
+- `apps/api`: the server (Node.js and Express).
+- `apps/web`: the screens (React and Vite).
+- `packages/shared`: roles, statuses, limits and validation used by both.
+- `docs`: requirements, architecture, data model, API contract, design, slice files and progress notes.
+- `.claude`: the project skills and Claude's settings.
+
+## Demo accounts
+
+Added in slice S1.
