@@ -42,4 +42,15 @@ export const LIMITS = {
   MAX_PHOTO_SIZE_MB: 5,
   // Proposal (FR-IV-05): ageing groups 0 to 30, 31 to 60, 61 to 90 and over 90 days.
   AGEING_DAYS: [30, 60, 90],
+
+  // Login (S2). All Proposals: the SRDS says "short-lived", "a short time" and "a fixed time".
+  ACCESS_TOKEN_MINUTES: 15,
+  REFRESH_TOKEN_DAYS: 7,
+  BCRYPT_COST: 12,
+  // A-18 says "a short time"; 15 minutes is the Proposal.
+  LOCK_MINUTES: 15,
+  RESET_LINK_MINUTES: 60,
+  PASSWORD_MIN_LENGTH: 8,
+  // bcrypt reads only the first 72 bytes of a password.
+  PASSWORD_MAX_LENGTH: 72,
 };

@@ -60,4 +60,14 @@ describe('LIMITS', () => {
   it('the ageing groups end at 30, 60 and 90 days', () => {
     expect(LIMITS.AGEING_DAYS).toEqual([30, 60, 90]);
   });
+
+  it('holds the login numbers of slice S2', () => {
+    expect(LIMITS.ACCESS_TOKEN_MINUTES).toBe(15);
+    expect(LIMITS.REFRESH_TOKEN_DAYS).toBe(7);
+    expect(LIMITS.BCRYPT_COST).toBe(12);
+    expect(LIMITS.LOCK_MINUTES).toBe(15);
+    expect(LIMITS.RESET_LINK_MINUTES).toBe(60);
+    expect(LIMITS.PASSWORD_MIN_LENGTH).toBe(8);
+    expect(LIMITS.PASSWORD_MAX_LENGTH).toBe(72);
+  });
 });

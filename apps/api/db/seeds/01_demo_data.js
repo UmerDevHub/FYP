@@ -1,9 +1,8 @@
 import bcrypt from 'bcryptjs';
-import { ROLE } from '@v360/shared/constants';
+import { LIMITS, ROLE } from '@v360/shared/constants';
 
 // Development only. This password is written in the README on purpose: it protects nothing real.
 const DEMO_PASSWORD = 'Vehicle360demo';
-const BCRYPT_COST = 12;
 
 async function getDatabaseName(knex) {
   const result = await knex.raw('SELECT current_database() AS name');
@@ -35,7 +34,7 @@ export async function seed(knex) {
     .returning('id');
   const [branch1, branch2] = branches.map((branch) => branch.id);
 
-  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, BCRYPT_COST);
+  const passwordHash = await bcrypt.hash(DEMO_PASSWORD, LIMITS.BCRYPT_COST);
   await knex('users').insert(
     [
       { name: 'Admin', email: 'admin@vehicle360.test', role: ROLE.ADMIN },

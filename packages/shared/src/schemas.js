@@ -1,5 +1,6 @@
 // Zod schemas for request bodies, query strings and forms, shared by the server and the screens.
 import { z } from 'zod';
+import { LIMITS } from './constants.js';
 
 // Stored in lower case, so one address can never make two accounts. 254 is the e-mail standard's maximum.
 export const emailSchema = z
@@ -9,11 +10,11 @@ export const emailSchema = z
   .max(254, 'Enter an e-mail address of at most 254 characters.')
   .pipe(z.email('Enter a valid e-mail address, for example ali@example.com.'));
 
-// Proposal: 8 to 72 characters with a letter and a number. bcrypt reads only the first 72 bytes.
+// Proposal: 8 to 72 characters with a letter and a number.
 export const passwordSchema = z
   .string()
-  .min(8, 'Use at least 8 characters.')
-  .max(72, 'Use at most 72 characters.')
+  .min(LIMITS.PASSWORD_MIN_LENGTH, `Use at least ${LIMITS.PASSWORD_MIN_LENGTH} characters.`)
+  .max(LIMITS.PASSWORD_MAX_LENGTH, `Use at most ${LIMITS.PASSWORD_MAX_LENGTH} characters.`)
   .regex(/[A-Za-z]/, 'Use at least one letter.')
   .regex(/[0-9]/, 'Use at least one number.');
 
