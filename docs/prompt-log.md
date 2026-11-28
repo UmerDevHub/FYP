@@ -8,3 +8,4 @@ How to use: after a prompt that changed code, add a line. Both partners write in
 |---|---|---|---|---|---|
 | 2026-11-28 | Umer | S0 | Own prompt (not the book's S0 prompts) | Claude replaced the old skeleton with the pack layout from the slice file: workspaces, API with /api/health, one web page, lint, format, README | Ran npm test, lint, format and npm run dev; opened the page |
 | 2026-11-28 | Umer | S0 | Own prompt: "fix these" (gaps against S0-04 to S0-12) | Shared package @v360/shared with LIMITS and tests, eqeqeq, .gitkeep folders, --if-present scripts, React Router and Tailwind, vehicle360_dev, README sections, API port 3100, listen error shown | Read each step's result, ran npm test and lint, called /api/health directly and through the web app |
+| 2026-11-28 | Umer | S1 | S1-03 | env.js checks PORT, WEB_ORIGIN, both database URLs and JWT_ACCESS_SECRET at start-up; server.js uses it | Ran npm test; started the API with and without .env |
