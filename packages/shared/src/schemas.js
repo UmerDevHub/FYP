@@ -1,6 +1,13 @@
 // Zod schemas for request bodies, query strings and forms, shared by the server and the screens.
 import { z } from 'zod';
-import { FUEL_TYPES, LIMITS, SELL_REQUEST_STATUSES, TRANSMISSIONS } from './constants.js';
+import {
+  FUEL_TYPES,
+  INSPECTION_RESULTS,
+  INSPECTION_STATUSES,
+  LIMITS,
+  SELL_REQUEST_STATUSES,
+  TRANSMISSIONS,
+} from './constants.js';
 
 // Stored in lower case, so one address can never make two accounts. 254 is the e-mail standard's maximum.
 export const emailSchema = z
@@ -149,4 +156,39 @@ export const arrivalSchema = z.object({
   registrationNo: upperCaseText(2, 15, 'Enter the registration number, for example LEA-1234.'),
   chassisNo: upperCaseText(5, 30, 'Enter the chassis number from the car documents.'),
   description: descriptionSchema,
+});
+
+// ---------- S4: inspections ----------
+
+// POST /api/inspections: start the inspection of a received car.
+export const startInspectionSchema = z.object({
+  vehicleId: wholeNumber('Choose a car.', 1, Number.MAX_SAFE_INTEGER),
+});
+
+// ?status=submitted on the inspection queue. No status means every status.
+export const inspectionListSchema = z.object({
+  status: z.enum(INSPECTION_STATUSES, { error: 'Choose a status from the list.' }).optional(),
+});
+
+// FR-IN-06: a draft can be saved half done, so every part is optional here. Submit checks that
+// everything is there.
+export const inspectionDraftSchema = z.object({
+  mileageKm: z.preprocess(emptyToUndefined, mileageSchema.optional()),
+  documentsVerified: z.boolean().default(false),
+  documentNotes: descriptionSchema,
+  damageNotes: descriptionSchema,
+  results: z
+    .array(
+      z.object({
+        checklistItemId: z.number().int().min(1),
+        result: z.enum(INSPECTION_RESULTS, { error: 'Choose Good, Fair, Poor or Not applicable.' }),
+        remarks: z.string().trim().max(300, 'Use at most 300 characters.').optional(),
+      }),
+    )
+    .default([]),
+});
+
+// One photo with its caption (FR-IN-05). The file itself is checked on the server.
+export const photoCaptionSchema = z.object({
+  caption: z.string().trim().max(120, 'Use at most 120 characters.').optional(),
 });

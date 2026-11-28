@@ -42,6 +42,15 @@ export const INSPECTION_STATUS = {
 };
 export const INSPECTION_STATUSES = Object.values(INSPECTION_STATUS);
 
+// FR-IN-02: the answer for each checklist item.
+export const INSPECTION_RESULT = {
+  GOOD: 'good',
+  FAIR: 'fair',
+  POOR: 'poor',
+  NOT_APPLICABLE: 'not_applicable',
+};
+export const INSPECTION_RESULTS = Object.values(INSPECTION_RESULT);
+
 // Assumption: the SRDS does not list fuel or transmission types.
 export const FUEL_TYPES = ['petrol', 'diesel', 'hybrid', 'electric', 'cng'];
 export const TRANSMISSIONS = ['manual', 'automatic'];
