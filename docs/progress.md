@@ -35,6 +35,7 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: seed branch names Branch 1 to 3 (Wah Cantt, Rawalpindi, Islamabad) are placeholders (Assumption).
 - S1: the test database vehicle360_test lives in Supabase, not on the laptop; tests are slower and need the internet (Proposal; Umer has no local PostgreSQL password).
 - S1: a size token --spacing-target (44 px) for the smallest tap target, because the spacing scale has no 44 (Proposal, design.md asks for 44 px).
+- S1: lib/format.js was built in S1-13, before S1-14, because the PriceTag shows its price through it (Proposal).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
@@ -47,6 +48,7 @@ One line per rule, with the date and the mistake that caused it.
 ## Exceptions to the patterns
 Every exception must be written here so that it stays an exception.
 - S1: the branches module has no service file: it only lists active branches, with no business rule (apps/api/CLAUDE.md allows this).
+- S1: the UI kit is three files, not one: ui.jsx (buttons, fields, badge, card), feedback.jsx (Dialog, EmptyState, Toast) and vehicle.jsx (PriceTag, PlateBadge), so each stays under 250 lines (Umer chose this in S1-12).
 
 ## Notes for the final report
 - S0: Express 5 passes a start-up error such as a port in use to the listen callback; ignoring it made the API stop without a message. server.js now throws it.

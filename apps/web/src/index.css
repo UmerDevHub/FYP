@@ -55,6 +55,14 @@
   --container-page: 1152px;
 }
 
+/* The one animation of the kit: a dialog opens with a short fade and lift (docs/design.md: motion answers an action). */
+@keyframes dialog-open {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 @layer base {
   body {
     background-color: var(--color-paper);

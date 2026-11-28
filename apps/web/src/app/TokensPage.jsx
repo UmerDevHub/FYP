@@ -1,5 +1,8 @@
 // Temporary (S1-11, S1-12): shows every token and the first kit parts. The /kit page (S1-16) replaces it.
+import { useState } from 'react';
+import { Dialog, EmptyState, Toast } from '../components/feedback.jsx';
 import { Badge, Button, Card, Field, Select, Textarea } from '../components/ui.jsx';
+import { PlateBadge, PriceTag } from '../components/vehicle.jsx';
 
 // Tailwind only builds classes it finds written out in full, so each class is spelled here.
 const SWATCHES = [
@@ -18,6 +21,9 @@ const SWATCHES = [
 ];
 
 export default function TokensPage() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isToastShown, setIsToastShown] = useState(false);
+
   return (
     <main className="mx-auto max-w-page px-4 py-8">
       <h1 className="text-title">Design tokens</h1>
@@ -75,6 +81,43 @@ export default function TokensPage() {
           <p className="p-4">A card is only for an object, such as a car.</p>
         </Card>
       </div>
+
+      <h2 className="mt-8 text-section">Kit, part two</h2>
+      <div className="mt-4 flex flex-wrap items-center gap-6">
+        <PriceTag price="5400000.00" />
+        <PriceTag price="5400000.00" size="detail" />
+        <PlateBadge registrationNumber="LEA-1234" />
+      </div>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Button variant="danger" onClick={() => setIsDialogOpen(true)}>
+          Reject request
+        </Button>
+        <Button variant="secondary" onClick={() => setIsToastShown(true)}>
+          Show a message
+        </Button>
+      </div>
+      <EmptyState
+        message="You have no requests yet. Send your first sell request."
+        action={<Button>Send sell request</Button>}
+      />
+      <Dialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        title="Reject this request?"
+      >
+        <Textarea label="Reason" hint="The customer sees this reason." />
+        <div className="mt-4 flex gap-3">
+          <Button variant="danger" onClick={() => setIsDialogOpen(false)}>
+            Reject request
+          </Button>
+          <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
+            Go back
+          </Button>
+        </div>
+      </Dialog>
+      {isToastShown && (
+        <Toast message="Sell request sent." onClose={() => setIsToastShown(false)} />
+      )}
     </main>
   );
 }
