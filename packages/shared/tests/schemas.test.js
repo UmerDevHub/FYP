@@ -5,6 +5,7 @@ import {
   pagingSchema,
   passwordSchema,
   phoneSchema,
+  loginSchema,
   registerSchema,
 } from '../src/schemas.js';
 
@@ -118,5 +119,18 @@ describe('registerSchema', () => {
 
   it('needs every field', () => {
     expect(isAccepted(registerSchema, { ...validForm, phone: undefined })).toBe(false);
+  });
+});
+
+describe('loginSchema', () => {
+  it('accepts an e-mail and any password that is not empty', () => {
+    expect(loginSchema.parse({ email: 'Ali@Example.com', password: 'x' })).toEqual({
+      email: 'ali@example.com',
+      password: 'x',
+    });
+  });
+
+  it('refuses an empty password', () => {
+    expect(isAccepted(loginSchema, { email: 'ali@example.com', password: '' })).toBe(false);
   });
 });

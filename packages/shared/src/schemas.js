@@ -49,3 +49,9 @@ export const registerSchema = z.object({
   phone: phoneSchema,
   password: passwordSchema,
 });
+
+// Login checks only that something was typed: the password rules are for new passwords, not old ones.
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, 'Enter your password.'),
+});

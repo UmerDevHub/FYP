@@ -1,9 +1,9 @@
 import { LIMITS } from '@v360/shared/constants';
-import { registerSchema } from '@v360/shared/schemas';
+import { loginSchema, registerSchema } from '@v360/shared/schemas';
 import { Router } from 'express';
 import { env } from '../../config/env.js';
 import { validate } from '../../middleware/validate.js';
-import { registerCustomer } from './auth.service.js';
+import { logInUser, registerCustomer } from './auth.service.js';
 
 export const authRouter = Router();
 
@@ -23,4 +23,11 @@ authRouter.post('/register', validate(registerSchema), async (req, res) => {
   const session = await registerCustomer(req.valid.body);
   setRefreshCookie(res, session.refreshToken);
   res.status(201).json({ data: { accessToken: session.accessToken, user: session.user } });
+});
+
+// Public.
+authRouter.post('/login', validate(loginSchema), async (req, res) => {
+  const session = await logInUser(req.valid.body);
+  setRefreshCookie(res, session.refreshToken);
+  res.json({ data: { accessToken: session.accessToken, user: session.user } });
 });
