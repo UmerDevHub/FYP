@@ -38,3 +38,20 @@ export function clearFailedLogins(userId) {
 export function insertRefreshToken(trx, refreshToken) {
   return trx('refreshTokens').insert(refreshToken);
 }
+
+// FOR UPDATE locks the row until the transaction ends: two refreshes of one token cannot both pass.
+export function findRefreshTokenForUpdate(trx, tokenHash) {
+  return trx('refreshTokens').where({ tokenHash }).forUpdate().first();
+}
+
+export function revokeRefreshToken(trx, id, revokedAt) {
+  return trx('refreshTokens').where({ id }).update({ revokedAt });
+}
+
+export function revokeTokenFamily(trx, familyId, revokedAt) {
+  return trx('refreshTokens').where({ familyId, revokedAt: null }).update({ revokedAt });
+}
+
+export function findActiveUserById(trx, userId) {
+  return trx('users').select(PUBLIC_USER_COLUMNS).where({ id: userId, isActive: true }).first();
+}

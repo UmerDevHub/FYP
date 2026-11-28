@@ -50,11 +50,13 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - Proposal from S1-19, not applied: show the 404 page inside the public layout, so the menu is there.
 - FR-NT-01 says "show the unread count" and "mark one or all as read", but slice S2 says no counter and the API has only "mark one". Umer chose to follow the slice for now; ask the supervisor.
 - A-18 limit: after five wrong passwords only a real account gets the "locked" message, so someone trying five times can learn that an e-mail has an account. The lock is what the SRDS asks for; ask the supervisor if this is acceptable.
+- S2-02 question 3: two browser tabs that refresh at the same moment send the same cookie; the second looks like a reused token and ends the login. Decide in S2-11 (screens) how to stop it.
 - S1-18: .claude/settings.json now also denies Read and Edit of apps/api/.env (Umer approved).
 - S2: login numbers in LIMITS: access token 15 minutes, refresh token 7 days, bcrypt cost 12, lock 15 minutes, reset link 60 minutes, password 8 to 72 (Proposal, slice S2).
 - S2: jsonwebtoken 9.0.3 for the access token (HS256 only); the refresh token is a random string stored as a SHA-256 hash (Proposal, architecture.md).
 - S2: login answers 401 with one message for a wrong e-mail, a wrong password and an inactive account; a locked account answers 429 with the minutes left (Proposal, architecture.md codes).
 - S2: API tests may take up to 30 seconds each, because the test database is in Supabase and bcrypt is slow on purpose (Proposal).
+- S2: cookie-parser 1.4.7 reads the refresh cookie; refresh tokens rotate in their family, a reused token cancels the family, and the token row is locked during a refresh (slice S2, NFR-SC-04).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.

@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { authRouter } from './modules/auth/auth.routes.js';
@@ -6,6 +7,8 @@ import { branchesRouter } from './modules/branches/branches.routes.js';
 export function createApp() {
   const app = express();
   app.use(express.json());
+  // Fills req.cookies: the refresh token arrives in a cookie.
+  app.use(cookieParser());
 
   app.get('/api/health', (req, res) => {
     res.json({ data: { status: 'ok' } });

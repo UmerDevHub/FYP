@@ -7,10 +7,14 @@ import { createRefreshToken, hashToken, signAccessToken } from '../../lib/tokens
 import {
   addFailedLogin,
   clearFailedLogins,
+  findActiveUserById,
+  findRefreshTokenForUpdate,
   findUserForLogin,
   insertRefreshToken,
   insertUser,
   lockUser,
+  revokeRefreshToken,
+  revokeTokenFamily,
 } from './auth.repository.js';
 
 const MINUTE = 60 * 1000;
@@ -23,14 +27,14 @@ const WRONG_LOGIN_MESSAGE = 'The e-mail or password is not right.';
 // nobody can find out by timing which e-mails have an account.
 const FAKE_PASSWORD_HASH = await hashPassword('no-account-has-this-password');
 
-// A new login: one access token, and one refresh token that starts a new token family.
-// Only the hash of the refresh token is stored (NFR-SC-04).
-async function startSession(trx, user, now) {
+// One access token and one refresh token. A login starts a new token family; a refresh stays in
+// the family of the token it replaces. Only the hash of the refresh token is stored (NFR-SC-04).
+async function startSession(trx, user, now, familyId = randomUUID()) {
   const refreshToken = createRefreshToken();
   await insertRefreshToken(trx, {
     userId: user.id,
     tokenHash: hashToken(refreshToken),
-    familyId: randomUUID(),
+    familyId,
     expiresAt: new Date(now + LIMITS.REFRESH_TOKEN_DAYS * DAY),
   });
   return { user, accessToken: signAccessToken(user, now), refreshToken };
@@ -99,4 +103,50 @@ export async function logInUser(form, now = Date.now()) {
 
   await clearFailedLogins(user.id);
   return db.transaction((trx) => startSession(trx, toPublicUser(user), now));
+}
+
+function createSessionEndedError() {
+  return new ApiError(401, 'Your session has ended. Log in again.');
+}
+
+// Swaps a refresh token for a new pair in the same family (FR-AU-03). Returns null when the
+// session has ended. The family is cancelled inside the transaction and the error is thrown after
+// it, because an error inside the transaction would undo the cancel.
+async function rotateRefreshToken(trx, refreshToken, now) {
+  const stored = await findRefreshTokenForUpdate(trx, hashToken(refreshToken));
+  if (!stored) return null;
+
+  // NFR-SC-04: a token that was already used comes back. Someone may have copied it: end every
+  // token of this login, including the newest one.
+  if (stored.revokedAt !== null) {
+    await revokeTokenFamily(trx, stored.familyId, new Date(now));
+    return null;
+  }
+  if (new Date(stored.expiresAt).getTime() <= now) return null;
+
+  const user = await findActiveUserById(trx, stored.userId);
+  if (!user) {
+    await revokeTokenFamily(trx, stored.familyId, new Date(now));
+    return null;
+  }
+  await revokeRefreshToken(trx, stored.id, new Date(now));
+  return startSession(trx, user, now, stored.familyId);
+}
+
+export async function refreshSession(refreshToken, now = Date.now()) {
+  if (!refreshToken) throw createSessionEndedError();
+  const session = await db.transaction((trx) => rotateRefreshToken(trx, refreshToken, now));
+  if (!session) throw createSessionEndedError();
+  return session;
+}
+
+// FR-AU-03: logging out cancels the refresh token. Without a cookie there is nothing to cancel.
+export async function logOut(refreshToken, now = Date.now()) {
+  if (!refreshToken) return;
+  await db.transaction(async (trx) => {
+    const stored = await findRefreshTokenForUpdate(trx, hashToken(refreshToken));
+    if (stored && stored.revokedAt === null) {
+      await revokeRefreshToken(trx, stored.id, new Date(now));
+    }
+  });
 }
