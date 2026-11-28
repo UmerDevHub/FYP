@@ -31,6 +31,8 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: paging is 12 a page by default, at most 50 (Proposal, api-contract.md).
 - S1: users has name and phone (FR-AU-01 needs them; data-model.md does not list them) (SRDS).
 - S1: customers and admins have no branch; sales staff and managers must have one (Assumption: data-model.md says "role and branch_id agree").
+- S1: bcryptjs 3.0.3 hashes passwords (cost 12); pure JavaScript, so no C++ build tools on Windows (Proposal).
+- S1: seed branch names Branch 1 to 3 (Wah Cantt, Rawalpindi, Islamabad) are placeholders (Assumption).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.

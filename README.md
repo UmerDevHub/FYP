@@ -71,6 +71,22 @@ With psql tools in PowerShell (change `18` to your PostgreSQL version; type your
 - `packages/shared`: limits, statuses and validation used by both.
 - `docs`: requirements, slice files and progress notes. The full folder map is in `docs/architecture.md`.
 
+## Demo accounts
+
+`npm run demo:reset` empties the development database, creates the tables and adds three branches and five accounts. It can be run as often as you like. It never runs on a test database or in production.
+
+Every demo account has the password `Vehicle360demo`. It is for the development database only.
+
+| Account                 | E-mail                   |
+| ----------------------- | ------------------------ |
+| Admin                   | admin@vehicle360.test    |
+| Manager of Branch 1     | manager1@vehicle360.test |
+| Sales staff of Branch 1 | staff1@vehicle360.test   |
+| Sales staff of Branch 2 | staff2@vehicle360.test   |
+| Customer                | customer@vehicle360.test |
+
+The branch names are placeholders until AK Motors gives the real ones.
+
 ## Rules for Claude
 
 Claude follows `CLAUDE.md` and the folder `CLAUDE.md` files in `apps/api`, `apps/web` and `packages/shared`.
