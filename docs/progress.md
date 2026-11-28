@@ -48,7 +48,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - Fuel and transmission types (the SRDS lists none; S1 uses an Assumption).
 - NFR-MT-01: is a separate controller file wanted, or is the 3 to 5 line handler in the routes file enough?
 - Proposal from S1-19, not applied: show the 404 page inside the public layout, so the menu is there.
-- Proposal from S1-18, not applied: deny Read and Edit of apps/api/.env in .claude/settings.json (it only covers the root .env).
+- S1-18: .claude/settings.json now also denies Read and Edit of apps/api/.env (Umer approved).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.
