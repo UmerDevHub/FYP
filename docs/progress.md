@@ -4,16 +4,19 @@ Claude reads this file at the start of every session and updates it at the end o
 Keep each line short. Newest slice on top inside each section.
 
 ## Now
-- Current slice: S0 (in progress)
-- Next step: Umer creates vehicle360_dev, vehicle360_test and apps/api/.env; then commit, push and merge; then Habib runs S0-13 (fresh clone).
+- Current slice: S1 done (28 November 2026). Next: S2 Login and accounts, in a new session.
+- Before S2: Umer resets the Supabase password and sets his own JWT_ACCESS_SECRET (both were shown in a chat).
+- S0 is still open for Habib: S0-13 fresh clone, then the S0 closing prompts.
 
 ## Done
-- S0 in progress: pack layout, empty API with /api/health on port 3100, one web page, shared LIMITS; npm test, lint and format pass on Umer's laptop.
+- S1 done: env check, Knex and Supabase connection, ApiError and one error handler, shared roles, statuses, LIMITS and schemas, migration 001 (6 tables), seed and demo:reset, tests on vehicle360_test, GET /api/branches, design tokens and fonts, UI kit (ui.jsx, feedback.jsx, vehicle.jsx), format.js, api.js, three layouts, /kit. 49 tests pass.
+- S0 on Umer's laptop: pack layout, API on port 3100, one web page; Habib's fresh clone (S0-13) not done yet.
 
 ## Decisions
 Write what was decided and why, in one line each. Mark the source: SRDS, Proposal, or Assumption.
 - S0: versions from package-lock.json: Node 24.12.0 (.nvmrc 24), express 5.3.0, vite 8.4.0, react 19.3.1, react-router 8.5.3, tailwindcss 4.3.5, vitest 5.1.2 (Proposal).
 - S1: development and test databases are on Supabase (PostgreSQL), so PostgreSQL 18 on the laptop is not used (Proposal).
+- S1: versions from package-lock.json: knex 3.3.0, pg 8.23.1, zod 4.6.7, bcryptjs 3.0.3, lucide-react 1.82.0, @fontsource packages for Barlow Semi Condensed and Source Sans 3 (Proposal).
 - S0: the API runs on port 3100, because port 3000 is used by another project on Umer's laptop; prompt E-03 says 3000, use 3100 (Proposal).
 - S0: LIMITS: 7 days to arrive (A-03), 4 inspection photos (A-06), 5 failed logins (A-18) (SRDS).
 - S0: the old FastAPI service is saved on branch archive/python-service and removed; not in the 35% (Proposal).
@@ -41,6 +44,11 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
 - Registration and chassis numbers on public pages: hidden until answered (question Q7 of the main playbook).
+- The real branch names and cities of AK Motors (the seed uses placeholders).
+- Fuel and transmission types (the SRDS lists none; S1 uses an Assumption).
+- NFR-MT-01: is a separate controller file wanted, or is the 3 to 5 line handler in the routes file enough?
+- Proposal from S1-19, not applied: show the 404 page inside the public layout, so the menu is there.
+- Proposal from S1-18, not applied: deny Read and Edit of apps/api/.env in .claude/settings.json (it only covers the root .env).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.
