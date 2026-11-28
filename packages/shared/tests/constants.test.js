@@ -70,4 +70,9 @@ describe('LIMITS', () => {
     expect(LIMITS.PASSWORD_MIN_LENGTH).toBe(8);
     expect(LIMITS.PASSWORD_MAX_LENGTH).toBe(72);
   });
+
+  it('limits login, register and forgot-password to 20 requests per 15 minutes per address', () => {
+    expect(LIMITS.AUTH_RATE_LIMIT_REQUESTS).toBe(20);
+    expect(LIMITS.AUTH_RATE_LIMIT_MINUTES).toBe(15);
+  });
 });

@@ -53,4 +53,7 @@ export const LIMITS = {
   PASSWORD_MIN_LENGTH: 8,
   // bcrypt reads only the first 72 bytes of a password.
   PASSWORD_MAX_LENGTH: 72,
+  // NFR-SC-06 asks for a rate limit; 20 requests per 15 minutes per address is the Proposal.
+  AUTH_RATE_LIMIT_REQUESTS: 20,
+  AUTH_RATE_LIMIT_MINUTES: 15,
 };

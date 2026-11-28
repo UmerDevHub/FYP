@@ -57,6 +57,8 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: login answers 401 with one message for a wrong e-mail, a wrong password and an inactive account; a locked account answers 429 with the minutes left (Proposal, architecture.md codes).
 - S2: API tests may take up to 30 seconds each, because the test database is in Supabase and bcrypt is slow on purpose (Proposal).
 - S2: cookie-parser 1.4.7 reads the refresh cookie; refresh tokens rotate in their family, a reused token cancels the family, and the token row is locked during a refresh (slice S2, NFR-SC-04).
+- S2: helmet 8.3.0, cors 2.8.6 (only WEB_ORIGIN, with credentials) and express-rate-limit 8.7.5 (20 requests per 15 minutes on login and register; forgot-password in S2-08) (Proposal, slice S2).
+- S2: staff of another branch get 403 "This record belongs to another branch."; a customer is refused by assertBranchAccess too (deny by default) (slice S2, apps/api/CLAUDE.md).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.
