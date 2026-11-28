@@ -18,16 +18,15 @@
     "test": "npm run test --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "migrate": "node -e \"console.log('npm run migrate is added in slice S1.')\"",
-    "seed": "node -e \"console.log('npm run seed is added in slice S1.')\"",
-    "demo:reset": "node -e \"console.log('npm run demo:reset is added in slice S1.')\"",
-    "job:expire": "node -e \"console.log('npm run job:expire is added in slice S8.')\""
+    "migrate": "npm run migrate -w apps/api --if-present",
+    "seed": "npm run seed -w apps/api --if-present",
+    "demo:reset": "npm run demo:reset -w apps/api --if-present",
+    "job:expire": "npm run job:expire -w apps/api --if-present"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "concurrently": "^10.0.7",
     "eslint": "^10.16.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "prettier": "^3.10.1"
   }

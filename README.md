@@ -1,36 +1,24 @@
 # Vehicle 360
 
-A multi-branch car dealership system for AK Motors. Final year project, COMSATS University Islamabad, Wah Campus.
-Built by Umer Nisar (server) and Habib Ullah (screens). Supervisor: Ms. Samia Zafar.
+## What this is
 
-This first part builds the 35% of the system described in `docs/srds-35.md`, plus login and accounts.
+Vehicle 360 is a multi-branch car dealership system for AK Motors, built as a final year project at COMSATS University Islamabad, Wah Campus, by Umer Nisar (server) and Habib Ullah (screens). This first part builds the 35% of the system described in `docs/srds-35.md`, plus login and accounts.
 
 ## What you need
 
-- Node.js 24 (the version is in `.nvmrc`). Check with `node -v`.
+- Node.js 24, the version in `.nvmrc`. Check with `node -v`.
 - Git.
 - PostgreSQL 16 or newer, running on your laptop.
 
 ## Install
 
-```
-npm install
-```
-
-## Set up the databases
-
-You need two databases: one for development and one for tests. The test database name must end in `_test`.
-
-1. Open a terminal and run these two commands. Type your PostgreSQL password when asked.
+1. Clone the repository and open its folder.
+2. Install the packages:
    ```
-   & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360
-   & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360_test
+   npm install
    ```
-   Change `18` to your PostgreSQL version.
-2. Copy `apps/api/.env.example` to `apps/api/.env`.
-3. In `apps/api/.env`, replace `CHANGE_ME` with your PostgreSQL password. Never commit this file.
-
-The API does not connect to the database yet. That starts in slice S1.
+3. Create the two databases (see "Create the databases" below).
+4. Copy `apps/api/.env.example` to `apps/api/.env`. In `apps/api/.env`, replace each `CHANGE_ME` with your own value. Never commit this file.
 
 ## Run
 
@@ -39,26 +27,50 @@ npm run dev
 ```
 
 - Web app: http://localhost:5173
-- API: http://localhost:3000/api/health
+- API: http://localhost:3100/api/health
 
 `npm run dev:api` and `npm run dev:web` start one part.
 
-## Test and check
+## Test
 
 ```
 npm test
+```
+
+In slice S0 the tests need nothing else. From slice S1 they need the test database `vehicle360_test`.
+
+To check and format the code:
+
+```
 npm run lint
 npm run format
+```
+
+## Create the databases
+
+You need two databases: `vehicle360_dev` for development and `vehicle360_test` for tests. The test database name must end in `_test`.
+
+With pgAdmin:
+
+1. Open pgAdmin and, in the Object Explorer on the left, open Servers and then your PostgreSQL server. Enter your password if asked.
+2. Right-click Databases, then choose Create, then Database.
+3. In Database, type `vehicle360_dev` and click Save.
+4. Repeat for `vehicle360_test`.
+
+With psql tools in PowerShell (change `18` to your PostgreSQL version; type your password when asked):
+
+```
+& "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360_dev
+& "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360_test
 ```
 
 ## Folders
 
 - `apps/api`: the server (Node.js and Express).
 - `apps/web`: the screens (React and Vite).
-- `packages/shared`: roles, statuses, limits and validation used by both.
-- `docs`: requirements, architecture, data model, API contract, design, slice files and progress notes.
-- `.claude`: the project skills and Claude's settings.
+- `packages/shared`: limits, statuses and validation used by both.
+- `docs`: requirements, slice files and progress notes. The full folder map is in `docs/architecture.md`.
 
-## Demo accounts
+## Rules for Claude
 
-Added in slice S1.
+Claude follows `CLAUDE.md` and the folder `CLAUDE.md` files in `apps/api`, `apps/web` and `packages/shared`.
