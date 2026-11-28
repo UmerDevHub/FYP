@@ -24,6 +24,7 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S0: no dotenv; Node 24 reads apps/api/.env with --env-file-if-exists (Proposal).
 - S0: Vite proxies /api to the API in development, so no CORS rule is needed yet (Proposal).
 - S0: migrate, seed, demo:reset and job:expire call the API scripts with --if-present; S1 and S8 add them (Proposal).
+- S1: a request body that is not valid JSON gives 400, not 500 (Proposal).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
