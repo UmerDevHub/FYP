@@ -24,7 +24,11 @@ function NotificationText({ notification }) {
 // Opening a notification marks it read: through its link if it has one, or by clicking it.
 function NotificationRow({ notification }) {
   const markRead = useMarkNotificationRead();
-  const markAsRead = () => !notification.isRead && markRead.mutate(notification.id);
+  function markAsRead() {
+    if (!notification.isRead) {
+      markRead.mutate(notification.id);
+    }
+  }
 
   if (notification.link) {
     return (

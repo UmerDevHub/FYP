@@ -4,8 +4,11 @@ import { verifyAccessToken } from '../lib/tokens.js';
 // FR-AU-06: every protected route starts with authenticate. It reads "Authorization: Bearer <token>"
 // and puts the caller on req.user. Role and branch come from the signed token, never from the body.
 export function authenticate(req, res, next) {
-  const [scheme, token] = (req.headers.authorization ?? '').split(' ');
-  if (scheme !== 'Bearer' || !token) throw new ApiError(401, 'You need to log in first.');
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith('Bearer ')) {
+    throw new ApiError(401, 'You need to log in first.');
+  }
+  const token = header.slice('Bearer '.length);
 
   let payload;
   try {

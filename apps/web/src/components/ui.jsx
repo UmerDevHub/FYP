@@ -50,7 +50,11 @@ function useFieldIds(hint, error) {
   const id = useId();
   const hintId = `${id}-hint`;
   const errorId = `${id}-error`;
-  const describedBy = [hint && hintId, error && errorId].filter(Boolean).join(' ') || undefined;
+  // The ids of the texts that describe the control, for example "id-hint id-error".
+  const describingIds = [];
+  if (hint) describingIds.push(hintId);
+  if (error) describingIds.push(errorId);
+  const describedBy = describingIds.length > 0 ? describingIds.join(' ') : undefined;
   return { id, hintId, errorId, describedBy };
 }
 

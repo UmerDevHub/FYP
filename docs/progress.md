@@ -4,11 +4,12 @@ Claude reads this file at the start of every session and updates it at the end o
 Keep each line short. Newest slice on top inside each section.
 
 ## Now
-- Current slice: S1 done (28 November 2026). Next: S2 Login and accounts, in a new session.
-- Before S2: Umer resets the Supabase password and sets his own JWT_ACCESS_SECRET (both were shown in a chat).
-- S0 is still open for Habib: S0-13 fresh clone, then the S0 closing prompts.
+- Current slice: S2 done (28 November 2026). Next: S3 Sell request and arrival.
+- Before a real server: lib/mailer.js must stop printing reset links (they hold a secret token) and send real e-mail.
+- S0 is still open for Habib: S0-13 fresh clone.
 
 ## Done
+- S2 done: register, login with lock, refresh with rotation, logout, forgot and reset password, my account, change password, notifications; AuthProvider, guards, Log in, Register, Forgot, Reset, My account and Notifications pages. Tests stopped at S2-15 by Umer's decision.
 - S1 done: env check, Knex and Supabase connection, ApiError and one error handler, shared roles, statuses, LIMITS and schemas, migration 001 (6 tables), seed and demo:reset, tests on vehicle360_test, GET /api/branches, design tokens and fonts, UI kit (ui.jsx, feedback.jsx, vehicle.jsx), format.js, api.js, three layouts, /kit. 49 tests pass.
 - S0 on Umer's laptop: pack layout, API on port 3100, one web page; Habib's fresh clone (S0-13) not done yet.
 
@@ -65,6 +66,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: react-hook-form 7.92.0, @hookform/resolvers 7.0.9 (the forms use the shared Zod schemas) and @tanstack/react-query 5.108.4. api.js only refreshes after a 401 when a token was sent, so a wrong login shows the server's own message (Proposal).
 - S2: when the server cannot be reached or answers something that is not JSON, the screen says "We could not reach the server. Check your connection and try again." instead of browser text (Proposal, plain-copy). The menu has a plain "Notifications" link, no counter (slice S2-14).
 - From S2-15 on: Umer decided to write and run no more automated tests and to skip browser walk-throughs, to save time. The existing tests stay. Risk: NFR-TS-01 asks for tests of every status change, and the book says never cut tests (Umer's decision).
+- Code style (Umer): beginner friendly; fewer lines are good, but no clever one-line shortcuts. Prefer a plain if.
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.
