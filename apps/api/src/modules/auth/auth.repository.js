@@ -55,3 +55,29 @@ export function revokeTokenFamily(trx, familyId, revokedAt) {
 export function findActiveUserById(trx, userId) {
   return trx('users').select(PUBLIC_USER_COLUMNS).where({ id: userId, isActive: true }).first();
 }
+
+export function findActiveUserByEmail(email) {
+  return db('users').select(['id', 'email']).where({ email, isActive: true }).first();
+}
+
+export function insertPasswordReset(passwordReset) {
+  return db('passwordResets').insert(passwordReset);
+}
+
+// FOR UPDATE: two uses of one reset link at the same moment cannot both pass.
+export function findPasswordResetForUpdate(trx, tokenHash) {
+  return trx('passwordResets').where({ tokenHash }).forUpdate().first();
+}
+
+export function markPasswordResetUsed(trx, id, usedAt) {
+  return trx('passwordResets').where({ id }).update({ usedAt });
+}
+
+export function updatePasswordHash(trx, userId, passwordHash) {
+  return trx('users').where({ id: userId }).update({ passwordHash, updatedAt: trx.fn.now() });
+}
+
+// Ends every login of this user, on every device.
+export function revokeAllRefreshTokens(trx, userId, revokedAt) {
+  return trx('refreshTokens').where({ userId, revokedAt: null }).update({ revokedAt });
+}

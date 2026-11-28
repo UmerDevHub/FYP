@@ -31,8 +31,9 @@ export function verifyAccessToken(token, now = Date.now()) {
   });
 }
 
-// The refresh token is a random string, not a JWT: it only has to be impossible to guess.
-export function createRefreshToken() {
+// A random token for a refresh cookie or a reset link. It is not a JWT: it only has to be
+// impossible to guess.
+export function createRandomToken() {
   return randomBytes(32).toString('hex');
 }
 

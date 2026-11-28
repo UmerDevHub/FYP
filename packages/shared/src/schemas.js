@@ -55,3 +55,11 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Enter your password.'),
 });
+
+export const forgotPasswordSchema = z.object({ email: emailSchema });
+
+// The token comes from the link in the e-mail. The new password follows the same rules as at register.
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, 'This link is not complete. Open the link from the e-mail again.'),
+  password: passwordSchema,
+});

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { hashPassword, isPasswordCorrect } from '../src/lib/password.js';
 import {
-  createRefreshToken,
+  createRandomToken,
   hashToken,
   signAccessToken,
   verifyAccessToken,
@@ -51,12 +51,12 @@ describe('access token', () => {
 
 describe('refresh token', () => {
   it('is long and random', () => {
-    expect(createRefreshToken()).toHaveLength(64);
-    expect(createRefreshToken()).not.toBe(createRefreshToken());
+    expect(createRandomToken()).toHaveLength(64);
+    expect(createRandomToken()).not.toBe(createRandomToken());
   });
 
   it('is stored as a hash that is not the raw value', () => {
-    const token = createRefreshToken();
+    const token = createRandomToken();
 
     expect(hashToken(token)).not.toBe(token);
     expect(hashToken(token)).toBe(hashToken(token));

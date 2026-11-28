@@ -59,6 +59,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: cookie-parser 1.4.7 reads the refresh cookie; refresh tokens rotate in their family, a reused token cancels the family, and the token row is locked during a refresh (slice S2, NFR-SC-04).
 - S2: helmet 8.3.0, cors 2.8.6 (only WEB_ORIGIN, with credentials) and express-rate-limit 8.7.5 (20 requests per 15 minutes on login and register; forgot-password in S2-08) (Proposal, slice S2).
 - S2: staff of another branch get 403 "This record belongs to another branch."; a customer is refused by assertBranchAccess too (deny by default) (slice S2, apps/api/CLAUDE.md).
+- S2: lib/mailer.js prints e-mails to the server console and keeps them in memory; real sending is not built. Reset links last 60 minutes, work once and end every login of the user (slice S2).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.
@@ -68,6 +69,7 @@ One line per rule, with the date and the mistake that caused it.
 Every exception must be written here so that it stays an exception.
 - S1: the branches module has no service file: it only lists active branches, with no business rule (apps/api/CLAUDE.md allows this).
 - S1: the UI kit is three files, not one: ui.jsx (buttons, fields, badge, card), feedback.jsx (Dialog, EmptyState, Toast) and vehicle.jsx (PriceTag, PlateBadge), so each stays under 250 lines (Umer chose this in S1-12).
+- S2: the auth module has two service files: auth.service.js (register, login, refresh, logout) and password.service.js (forgot, reset, change password), so each stays under 200 lines.
 
 ## Notes for the final report
 - S0: Express 5 passes a start-up error such as a port in use to the listen callback; ignoring it made the API stop without a message. server.js now throws it.

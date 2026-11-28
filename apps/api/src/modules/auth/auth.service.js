@@ -3,7 +3,7 @@ import { LIMITS, ROLE } from '@v360/shared/constants';
 import { db } from '../../config/db.js';
 import { ApiError } from '../../lib/ApiError.js';
 import { hashPassword, isPasswordCorrect } from '../../lib/password.js';
-import { createRefreshToken, hashToken, signAccessToken } from '../../lib/tokens.js';
+import { createRandomToken, hashToken, signAccessToken } from '../../lib/tokens.js';
 import {
   addFailedLogin,
   clearFailedLogins,
@@ -30,7 +30,7 @@ const FAKE_PASSWORD_HASH = await hashPassword('no-account-has-this-password');
 // One access token and one refresh token. A login starts a new token family; a refresh stays in
 // the family of the token it replaces. Only the hash of the refresh token is stored (NFR-SC-04).
 async function startSession(trx, user, now, familyId = randomUUID()) {
-  const refreshToken = createRefreshToken();
+  const refreshToken = createRandomToken();
   await insertRefreshToken(trx, {
     userId: user.id,
     tokenHash: hashToken(refreshToken),

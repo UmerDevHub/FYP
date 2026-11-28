@@ -1,10 +1,16 @@
 import { LIMITS } from '@v360/shared/constants';
-import { loginSchema, registerSchema } from '@v360/shared/schemas';
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordSchema,
+} from '@v360/shared/schemas';
 import { Router } from 'express';
 import { env } from '../../config/env.js';
 import { createAuthRateLimit } from '../../middleware/rateLimit.js';
 import { validate } from '../../middleware/validate.js';
 import { logInUser, logOut, refreshSession, registerCustomer } from './auth.service.js';
+import { requestPasswordReset, resetPassword } from './password.service.js';
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
 
@@ -56,6 +62,23 @@ export function createAuthRouter() {
     await logOut(req.cookies[REFRESH_COOKIE_NAME]);
     res.clearCookie(REFRESH_COOKIE_NAME, REFRESH_COOKIE_OPTIONS);
     res.status(204).end();
+  });
+
+  // Public. Always the same answer, whether or not the e-mail has an account.
+  router.post(
+    '/forgot-password',
+    authRateLimit,
+    validate(forgotPasswordSchema),
+    async (req, res) => {
+      const message = await requestPasswordReset(req.valid.body.email);
+      res.json({ data: { message } });
+    },
+  );
+
+  // Public. The token from the e-mail link proves who is asking.
+  router.post('/reset-password', authRateLimit, validate(resetPasswordSchema), async (req, res) => {
+    const message = await resetPassword(req.valid.body);
+    res.json({ data: { message } });
   });
 
   return router;

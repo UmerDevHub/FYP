@@ -5,8 +5,10 @@ import {
   pagingSchema,
   passwordSchema,
   phoneSchema,
+  forgotPasswordSchema,
   loginSchema,
   registerSchema,
+  resetPasswordSchema,
 } from '../src/schemas.js';
 
 function isAccepted(schema, value) {
@@ -132,5 +134,22 @@ describe('loginSchema', () => {
 
   it('refuses an empty password', () => {
     expect(isAccepted(loginSchema, { email: 'ali@example.com', password: '' })).toBe(false);
+  });
+});
+
+describe('forgotPasswordSchema', () => {
+  it('needs only a valid e-mail', () => {
+    expect(forgotPasswordSchema.parse({ email: 'Ali@Example.com' })).toEqual({
+      email: 'ali@example.com',
+    });
+    expect(isAccepted(forgotPasswordSchema, { email: 'not-an-email' })).toBe(false);
+  });
+});
+
+describe('resetPasswordSchema', () => {
+  it('needs the token from the link and a new password that follows the rules', () => {
+    expect(isAccepted(resetPasswordSchema, { token: 'abc', password: 'newpass12' })).toBe(true);
+    expect(isAccepted(resetPasswordSchema, { token: '', password: 'newpass12' })).toBe(false);
+    expect(isAccepted(resetPasswordSchema, { token: 'abc', password: 'short' })).toBe(false);
   });
 });
