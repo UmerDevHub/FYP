@@ -1,9 +1,9 @@
 import { ROLE } from '@v360/shared/constants';
-import { arrivalSchema } from '@v360/shared/schemas';
+import { arrivalSchema, vehicleListSchema } from '@v360/shared/schemas';
 import { Router } from 'express';
 import { authenticate, requireRole } from '../../middleware/authenticate.js';
 import { validate } from '../../middleware/validate.js';
-import { recordArrival } from './vehicles.service.js';
+import { listBranchVehicles, recordArrival } from './vehicles.service.js';
 
 export const vehiclesRouter = Router();
 
@@ -17,5 +17,16 @@ vehiclesRouter.post(
   validate(arrivalSchema),
   async (req, res) => {
     res.status(201).json({ data: await recordArrival(req.user, req.valid.body) });
+  },
+);
+
+// Sales staff and managers: the cars of their own branch, filtered by status.
+vehiclesRouter.get(
+  '/manage',
+  authenticate,
+  requireRole(ROLE.SALES_STAFF, ROLE.BRANCH_MANAGER),
+  validate(vehicleListSchema, 'query'),
+  async (req, res) => {
+    res.json({ data: await listBranchVehicles(req.user, req.valid.query.status) });
   },
 );

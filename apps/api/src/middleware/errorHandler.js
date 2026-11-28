@@ -16,6 +16,7 @@ const CONSTRAINT_ERRORS = {
   ],
   vehicles_chassis_unique: [409, 'This chassis number is already used by another vehicle.'],
   vehicles_sell_request_id_key: [409, 'A car has already arrived for this sell request.'],
+  inspections_one_open_per_vehicle: [409, 'This car already has an open inspection.'],
 };
 
 function toApiError(error) {

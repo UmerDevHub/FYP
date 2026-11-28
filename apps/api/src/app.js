@@ -3,8 +3,10 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import { env } from './config/env.js';
+import { UPLOADS_DIR } from './lib/files.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { createAuthRouter } from './modules/auth/auth.routes.js';
+import { inspectionsRouter } from './modules/inspections/inspections.routes.js';
 import { branchesRouter } from './modules/branches/branches.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { sellRequestsRouter } from './modules/sell-requests/sellRequests.routes.js';
@@ -31,6 +33,9 @@ export function createApp() {
   app.use('/api/notifications', notificationsRouter);
   app.use('/api/sell-requests', sellRequestsRouter);
   app.use('/api/vehicles', vehiclesRouter);
+  app.use('/api/inspections', inspectionsRouter);
+  // Photos have long random names, so the address of one cannot be guessed (NFR-SC-07).
+  app.use('/api/uploads', express.static(UPLOADS_DIR));
 
   // These two stay last: every route must be registered above them.
   app.use(notFound);

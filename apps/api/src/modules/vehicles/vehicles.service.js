@@ -5,7 +5,7 @@ import { logActivity } from '../../lib/activityLog.js';
 import { assertBranchAccess } from '../../lib/assertBranchAccess.js';
 import { addVehicleHistory, changeStatus } from '../../lib/changeStatus.js';
 import { findSellRequestById } from '../sell-requests/sellRequests.repository.js';
-import { insertVehicle } from './vehicles.repository.js';
+import { findVehiclesOfBranch, insertVehicle } from './vehicles.repository.js';
 
 // Only an accepted request of the staff member's branch that has not expired may arrive.
 // The expiry is checked here too, even if the hourly expiry job (S8) has not run yet.
@@ -65,4 +65,10 @@ export async function recordArrival(staff, form, now = Date.now()) {
     });
     return vehicle;
   });
+}
+
+// FR-BM-06 and FR-SS-08: the cars of the user's own branch, for example the received ones that
+// wait for an inspection.
+export function listBranchVehicles(user, status) {
+  return findVehiclesOfBranch(user.branchId, status);
 }

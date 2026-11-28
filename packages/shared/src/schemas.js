@@ -7,6 +7,7 @@ import {
   LIMITS,
   SELL_REQUEST_STATUSES,
   TRANSMISSIONS,
+  VEHICLE_STATUSES,
 } from './constants.js';
 
 // Stored in lower case, so one address can never make two accounts. 254 is the e-mail standard's maximum.
@@ -191,4 +192,9 @@ export const inspectionDraftSchema = z.object({
 // One photo with its caption (FR-IN-05). The file itself is checked on the server.
 export const photoCaptionSchema = z.object({
   caption: z.string().trim().max(120, 'Use at most 120 characters.').optional(),
+});
+
+// ?status=received on the staff list of cars. No status means every status.
+export const vehicleListSchema = z.object({
+  status: z.enum(VEHICLE_STATUSES, { error: 'Choose a status from the list.' }).optional(),
 });

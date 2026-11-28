@@ -1,4 +1,5 @@
 import {
+  INSPECTION_TRANSITIONS,
   isTransitionAllowed,
   SELL_REQUEST_TRANSITIONS,
   VEHICLE_TRANSITIONS,
@@ -17,6 +18,7 @@ const RECORD_TYPES = {
     label: 'sell request',
   },
   vehicle: { table: 'vehicles', transitions: VEHICLE_TRANSITIONS, label: 'car' },
+  inspection: { table: 'inspections', transitions: INSPECTION_TRANSITIONS, label: 'inspection' },
 };
 
 function toWords(status) {

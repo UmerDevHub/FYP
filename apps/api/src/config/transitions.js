@@ -1,4 +1,4 @@
-import { SELL_REQUEST_STATUS, VEHICLE_STATUS } from '@v360/shared/constants';
+import { INSPECTION_STATUS, SELL_REQUEST_STATUS, VEHICLE_STATUS } from '@v360/shared/constants';
 
 // FR-AC-02 and NFR-CR-01: the only status changes the system allows. Any other change is refused.
 // Each line reads "from this status, the record may move to these statuses".
@@ -18,6 +18,17 @@ export const VEHICLE_TRANSITIONS = {
     VEHICLE_STATUS.REJECTED,
   ],
   [VEHICLE_STATUS.RECONDITIONING]: [VEHICLE_STATUS.READY_FOR_SALE],
+};
+
+// SRDS Table 5.7.
+export const INSPECTION_TRANSITIONS = {
+  [INSPECTION_STATUS.DRAFT]: [INSPECTION_STATUS.SUBMITTED],
+  [INSPECTION_STATUS.SUBMITTED]: [
+    INSPECTION_STATUS.APPROVED,
+    INSPECTION_STATUS.RETURNED,
+    INSPECTION_STATUS.REJECTED,
+  ],
+  [INSPECTION_STATUS.RETURNED]: [INSPECTION_STATUS.SUBMITTED],
 };
 
 export function isTransitionAllowed(transitions, fromStatus, toStatus) {
