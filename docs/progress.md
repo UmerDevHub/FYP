@@ -29,6 +29,8 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: password 8 to 72 characters with a letter and a number (Proposal, SRDS section 13).
 - S1: phone numbers are saved as 03 plus 9 digits, without the dash (Proposal).
 - S1: paging is 12 a page by default, at most 50 (Proposal, api-contract.md).
+- S1: users has name and phone (FR-AU-01 needs them; data-model.md does not list them) (SRDS).
+- S1: customers and admins have no branch; sales staff and managers must have one (Assumption: data-model.md says "role and branch_id agree").
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
