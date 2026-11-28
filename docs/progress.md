@@ -25,6 +25,10 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S0: Vite proxies /api to the API in development, so no CORS rule is needed yet (Proposal).
 - S0: migrate, seed, demo:reset and job:expire call the API scripts with --if-present; S1 and S8 add them (Proposal).
 - S1: a request body that is not valid JSON gives 400, not 500 (Proposal).
+- S1: fuel types petrol, diesel, hybrid, electric, cng and transmissions manual, automatic; the SRDS lists none (Assumption).
+- S1: password 8 to 72 characters with a letter and a number (Proposal, SRDS section 13).
+- S1: phone numbers are saved as 03 plus 9 digits, without the dash (Proposal).
+- S1: paging is 12 a page by default, at most 50 (Proposal, api-contract.md).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
