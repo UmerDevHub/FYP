@@ -1,6 +1,6 @@
 import { ROLE } from '@v360/shared/constants';
 import { Link, NavLink } from 'react-router';
-import { PLACEHOLDER_USER } from './placeholderUser.js';
+import { useAuth } from './AuthProvider.jsx';
 
 const STAFF_ROLES = [ROLE.SALES_STAFF, ROLE.BRANCH_MANAGER, ROLE.ADMIN];
 
@@ -22,7 +22,7 @@ function menuLinkClasses({ isActive }) {
 }
 
 export default function Header() {
-  const user = PLACEHOLDER_USER;
+  const { user, logOut } = useAuth();
 
   return (
     <header className="bg-petrol text-paper">
@@ -39,6 +39,17 @@ export default function Header() {
                 </NavLink>
               </li>
             ))}
+            <li>
+              {user ? (
+                <button type="button" onClick={logOut} className={menuLinkClasses({})}>
+                  Log out
+                </button>
+              ) : (
+                <NavLink to="/login" className={menuLinkClasses}>
+                  Log in
+                </NavLink>
+              )}
+            </li>
           </ul>
         </nav>
       </div>

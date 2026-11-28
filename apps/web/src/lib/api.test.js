@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { api, setAccessToken, setLoginNeededHandler } from './api.js';
+import { api, restoreSession, setAccessToken, setLoginNeededHandler } from './api.js';
 
 function jsonAnswer(status, body) {
   return new Response(JSON.stringify(body), { status });
@@ -10,7 +10,7 @@ function createFakeServer({ isRefreshWorking = true } = {}) {
   return vi.fn(async (url, options) => {
     if (url === '/api/auth/refresh') {
       return isRefreshWorking
-        ? jsonAnswer(200, { data: { accessToken: 'new-token' } })
+        ? jsonAnswer(200, { data: { accessToken: 'new-token', user: { id: 3, role: 'customer' } } })
         : jsonAnswer(401, { error: { message: 'Log in again.', details: null } });
     }
     if (options.headers.Authorization !== 'Bearer new-token') {
@@ -89,5 +89,30 @@ describe('api', () => {
 
     await expect(api('/cars')).rejects.toMatchObject({ status: 401 });
     expect(goToLogin).toHaveBeenCalledOnce();
+  });
+});
+
+describe('restoreSession (start-up after a reload)', () => {
+  it('uses the refresh cookie to find out who is logged in', async () => {
+    vi.stubGlobal('fetch', createFakeServer());
+
+    expect(await restoreSession()).toEqual({ id: 3, role: 'customer' });
+    // The new access token is kept in memory, so the next call is logged in.
+    expect(await api('/cars')).toEqual({ data: ['Corolla'] });
+  });
+
+  it('two start-ups at once (React StrictMode) make one refresh call', async () => {
+    const fakeFetch = createFakeServer();
+    vi.stubGlobal('fetch', fakeFetch);
+
+    await Promise.all([restoreSession(), restoreSession()]);
+
+    expect(countCalls(fakeFetch, '/api/auth/refresh')).toBe(1);
+  });
+
+  it('gives null when nobody is logged in', async () => {
+    vi.stubGlobal('fetch', createFakeServer({ isRefreshWorking: false }));
+
+    expect(await restoreSession()).toBeNull();
   });
 });

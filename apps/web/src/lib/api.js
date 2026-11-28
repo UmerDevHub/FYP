@@ -41,14 +41,15 @@ function send(path, { method = 'GET', body } = {}) {
 
 // Only one refresh at a time: React StrictMode runs effects twice in development, and two
 // refresh calls with the same cookie would cancel each other and log the person out (S2).
+// Gives the new session ({ accessToken, user }), or null when the person must log in again.
 function refreshAccessToken() {
   if (!refreshPromise) {
     refreshPromise = fetch(`${BASE_URL}/auth/refresh`, { method: 'POST', credentials: 'include' })
       .then(async (response) => {
-        if (!response.ok) return false;
+        if (!response.ok) return null;
         const answer = await response.json();
         setAccessToken(answer.data.accessToken);
-        return true;
+        return answer.data;
       })
       .finally(() => {
         refreshPromise = null;
@@ -62,8 +63,8 @@ export async function api(path, options = {}) {
   let response = await send(path, options);
 
   if (response.status === 401) {
-    const isRefreshed = await refreshAccessToken();
-    if (!isRefreshed) {
+    const session = await refreshAccessToken();
+    if (!session) {
       handleLoginNeeded();
       throw new ApiRequestError(401, 'You need to log in first.');
     }
@@ -76,4 +77,11 @@ export async function api(path, options = {}) {
     throw new ApiRequestError(response.status, answer.error.message, answer.error.details);
   }
   return answer;
+}
+
+// After a reload the access token is gone (it lived in memory), but the httpOnly refresh cookie
+// is still there. One refresh call finds out who is logged in. Gives the user, or null.
+export async function restoreSession() {
+  const session = await refreshAccessToken();
+  return session ? session.user : null;
 }
