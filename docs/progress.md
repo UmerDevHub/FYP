@@ -63,6 +63,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: another user's notification answers 404, not 403, so nobody learns that it exists (slice S2-09 asked to choose). Change password ends every other login and keeps the device that asked (Proposal).
 - S2: the web keeps the access token in memory only; after a reload one refresh call (restoreSession) brings the user back. Log out reloads the app at the home page, which also clears every page's memory (Proposal).
 - S2: react-hook-form 7.92.0, @hookform/resolvers 7.0.9 (the forms use the shared Zod schemas) and @tanstack/react-query 5.108.4. api.js only refreshes after a 401 when a token was sent, so a wrong login shows the server's own message (Proposal).
+- S2: when the server cannot be reached or answers something that is not JSON, the screen says "We could not reach the server. Check your connection and try again." instead of browser text (Proposal, plain-copy). The menu has a plain "Notifications" link, no counter (slice S2-14).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.

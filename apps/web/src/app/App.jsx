@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ROLE } from '@v360/shared/constants';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
+import AccountPage from '../features/account/AccountPage.jsx';
+import NotificationsPage from '../features/account/NotificationsPage.jsx';
 import ForgotPasswordPage from '../features/auth/ForgotPasswordPage.jsx';
 import LoginPage from '../features/auth/LoginPage.jsx';
 import RegisterPage from '../features/auth/RegisterPage.jsx';
@@ -63,7 +65,15 @@ const router = createBrowserRouter([
             path: 'account',
             element: (
               <RequireLogin>
-                <LayoutNamePage layoutName="Customer" />
+                <AccountPage />
+              </RequireLogin>
+            ),
+          },
+          {
+            path: 'notifications',
+            element: (
+              <RequireLogin>
+                <NotificationsPage />
               </RequireLogin>
             ),
           },

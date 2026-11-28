@@ -139,3 +139,21 @@ describe('a 401 on a request without a token', () => {
     expect(goToLogin).not.toHaveBeenCalled();
   });
 });
+
+describe('when the server cannot be reached', () => {
+  const NO_SERVER = 'We could not reach the server. Check your connection and try again.';
+
+  it('a network failure gives a plain message', async () => {
+    vi.stubGlobal('fetch', async () => {
+      throw new TypeError('Failed to fetch');
+    });
+
+    await expect(api('/branches')).rejects.toMatchObject({ status: 0, message: NO_SERVER });
+  });
+
+  it('an answer that is not JSON (for example a proxy error page) gives the same plain message', async () => {
+    vi.stubGlobal('fetch', async () => new Response('', { status: 502 }));
+
+    await expect(api('/branches')).rejects.toMatchObject({ status: 502, message: NO_SERVER });
+  });
+});

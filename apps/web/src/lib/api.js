@@ -26,17 +26,34 @@ export class ApiRequestError extends Error {
   }
 }
 
-function send(path, { method = 'GET', body } = {}) {
+const NO_SERVER_MESSAGE = 'We could not reach the server. Check your connection and try again.';
+
+async function send(path, { method = 'GET', body } = {}) {
   const headers = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
 
-  return fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    credentials: 'include', // sends the httpOnly refresh cookie
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  try {
+    return await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers,
+      credentials: 'include', // sends the httpOnly refresh cookie
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    // No answer at all: offline, or the API is not running.
+    throw new ApiRequestError(0, NO_SERVER_MESSAGE);
+  }
+}
+
+// Our API always answers JSON. Anything else (for example a proxy error page while the API
+// restarts) means the server could not be reached: never show the browser's technical text.
+async function readAnswer(response) {
+  try {
+    return await response.json();
+  } catch {
+    throw new ApiRequestError(response.status, NO_SERVER_MESSAGE);
+  }
 }
 
 // Only one refresh at a time: React StrictMode runs effects twice in development, and two
@@ -75,7 +92,7 @@ export async function api(path, options = {}) {
   }
 
   if (response.status === 204) return null;
-  const answer = await response.json();
+  const answer = await readAnswer(response);
   if (!response.ok) {
     throw new ApiRequestError(response.status, answer.error.message, answer.error.details);
   }

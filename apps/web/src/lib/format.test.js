@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate, formatMileage, formatPrice } from './format.js';
+import { formatDate, formatDateTime, formatMileage, formatPrice } from './format.js';
 
 describe('formatPrice', () => {
   it('shows rupees with thousands separators', () => {
@@ -38,5 +38,15 @@ describe('formatMileage', () => {
 
   it('shows nothing for an empty value', () => {
     expect(formatMileage(null)).toBe('');
+  });
+});
+
+describe('formatDateTime', () => {
+  it('shows the date and the time in Pakistan time (A-04)', () => {
+    expect(formatDateTime('2027-03-13T20:30:00Z')).toBe('14 March 2027 at 1:30 am');
+  });
+
+  it('shows nothing for an empty value', () => {
+    expect(formatDateTime(null)).toBe('');
   });
 });
