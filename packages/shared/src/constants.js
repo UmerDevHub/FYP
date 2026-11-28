@@ -1,6 +1,13 @@
 // The words and numbers the whole system uses. Import them; never type them again elsewhere.
 
-export const ROLES = ['customer', 'sales_staff', 'branch_manager', 'admin'];
+// Use ROLE.SALES_STAFF in code, so a role word is never typed twice.
+export const ROLE = {
+  CUSTOMER: 'customer',
+  SALES_STAFF: 'sales_staff',
+  BRANCH_MANAGER: 'branch_manager',
+  ADMIN: 'admin',
+};
+export const ROLES = Object.values(ROLE);
 
 // A-03 and Table 5.6.
 export const SELL_REQUEST_STATUSES = ['pending', 'accepted', 'rejected', 'expired', 'completed'];

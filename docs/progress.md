@@ -36,6 +36,7 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: the test database vehicle360_test lives in Supabase, not on the laptop; tests are slower and need the internet (Proposal; Umer has no local PostgreSQL password).
 - S1: a size token --spacing-target (44 px) for the smallest tap target, because the spacing scale has no 44 (Proposal, design.md asks for 44 px).
 - S1: lib/format.js was built in S1-13, before S1-14, because the PriceTag shows its price through it (Proposal).
+- S1: shared constants also export ROLE (ROLE.SALES_STAFF and so on), so the screens never type a role word; ROLES is unchanged (Proposal). Habib: packages/shared changed.
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.
