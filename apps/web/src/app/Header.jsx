@@ -10,7 +10,10 @@ function getMenuLinks(role) {
     { to: '/', label: 'Cars' },
     { to: '/sell', label: 'Sell your car' },
   ];
-  if (role === ROLE.CUSTOMER) links.push({ to: '/account', label: 'My account' });
+  if (role === ROLE.CUSTOMER) {
+    links.push({ to: '/my-requests', label: 'My requests' });
+    links.push({ to: '/account', label: 'My account' });
+  }
   if (STAFF_ROLES.includes(role)) links.push({ to: '/staff', label: 'Staff area' });
   // A plain link, no bell or counter: the slice leaves the unread count out (see progress.md).
   if (role) links.push({ to: '/notifications', label: 'Notifications' });
