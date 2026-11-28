@@ -60,9 +60,12 @@ function refreshAccessToken() {
 
 // Sends a request and returns the answer ({ data } or { data, meta }). An error answer is thrown.
 export async function api(path, options = {}) {
+  // A 401 only means "the access token ran out" when a token was sent. Without one (for example
+  // a wrong login) the 401 is the server's real answer and its message is shown as it is.
+  const wasTokenSent = accessToken !== null;
   let response = await send(path, options);
 
-  if (response.status === 401) {
+  if (response.status === 401 && wasTokenSent) {
     const session = await refreshAccessToken();
     if (!session) {
       handleLoginNeeded();

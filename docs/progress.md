@@ -62,6 +62,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: lib/mailer.js prints e-mails to the server console and keeps them in memory; real sending is not built. Reset links last 60 minutes, work once and end every login of the user (slice S2).
 - S2: another user's notification answers 404, not 403, so nobody learns that it exists (slice S2-09 asked to choose). Change password ends every other login and keeps the device that asked (Proposal).
 - S2: the web keeps the access token in memory only; after a reload one refresh call (restoreSession) brings the user back. Log out reloads the app at the home page, which also clears every page's memory (Proposal).
+- S2: react-hook-form 7.92.0, @hookform/resolvers 7.0.9 (the forms use the shared Zod schemas) and @tanstack/react-query 5.108.4. api.js only refreshes after a 401 when a token was sent, so a wrong login shows the server's own message (Proposal).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.

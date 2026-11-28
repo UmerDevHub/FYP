@@ -65,6 +65,7 @@ describe('api', () => {
   it('after a 401 it refreshes once and repeats the request once', async () => {
     const fakeFetch = createFakeServer();
     vi.stubGlobal('fetch', fakeFetch);
+    setAccessToken('expired-token');
 
     const answer = await api('/cars');
 
@@ -76,6 +77,7 @@ describe('api', () => {
   it('two calls that get a 401 at the same time share one refresh call', async () => {
     const fakeFetch = createFakeServer();
     vi.stubGlobal('fetch', fakeFetch);
+    setAccessToken('expired-token');
 
     await Promise.all([api('/cars'), api('/cars')]);
 
@@ -84,6 +86,7 @@ describe('api', () => {
 
   it('a failed refresh sends the person to the login page', async () => {
     vi.stubGlobal('fetch', createFakeServer({ isRefreshWorking: false }));
+    setAccessToken('expired-token');
     const goToLogin = vi.fn();
     setLoginNeededHandler(goToLogin);
 
@@ -114,5 +117,25 @@ describe('restoreSession (start-up after a reload)', () => {
     vi.stubGlobal('fetch', createFakeServer({ isRefreshWorking: false }));
 
     expect(await restoreSession()).toBeNull();
+  });
+});
+
+describe('a 401 on a request without a token', () => {
+  it('shows the server message (a wrong login) and does not try to refresh', async () => {
+    const fakeFetch = vi.fn(async () =>
+      jsonAnswer(401, {
+        error: { message: 'The e-mail or password is not right.', details: null },
+      }),
+    );
+    vi.stubGlobal('fetch', fakeFetch);
+    const goToLogin = vi.fn();
+    setLoginNeededHandler(goToLogin);
+
+    await expect(api('/auth/login', { method: 'POST', body: {} })).rejects.toMatchObject({
+      status: 401,
+      message: 'The e-mail or password is not right.',
+    });
+    expect(countCalls(fakeFetch, '/api/auth/refresh')).toBe(0);
+    expect(goToLogin).not.toHaveBeenCalled();
   });
 });

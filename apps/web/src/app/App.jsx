@@ -1,5 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ROLE } from '@v360/shared/constants';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
+import LoginPage from '../features/auth/LoginPage.jsx';
+import RegisterPage from '../features/auth/RegisterPage.jsx';
 import { AuthProvider } from './AuthProvider.jsx';
 import { RequireLogin, RequireRole } from './guards.jsx';
 import KitPage from './KitPage.jsx';
@@ -11,12 +14,17 @@ const STAFF_ROLES = [ROLE.SALES_STAFF, ROLE.BRANCH_MANAGER, ROLE.ADMIN];
 // The kit page is for the team only: a production build has no /kit address.
 const developmentRoutes = import.meta.env.DEV ? [{ path: 'kit', Component: KitPage }] : [];
 
+// Server data lives in TanStack Query (apps/web/CLAUDE.md).
+const queryClient = new QueryClient();
+
 // AuthProvider sits inside the router, because it sends people to /login.
 function Root() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
@@ -28,7 +36,11 @@ const router = createBrowserRouter([
     children: [
       {
         Component: PublicLayout,
-        children: [{ index: true, element: <LayoutNamePage layoutName="Public" /> }],
+        children: [
+          { index: true, element: <LayoutNamePage layoutName="Public" /> },
+          { path: 'login', Component: LoginPage },
+          { path: 'register', Component: RegisterPage },
+        ],
       },
       {
         Component: CustomerLayout,
