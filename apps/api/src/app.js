@@ -1,5 +1,6 @@
 import express from 'express';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import { branchesRouter } from './modules/branches/branches.routes.js';
 
 export function createApp() {
   const app = express();
@@ -8,6 +9,8 @@ export function createApp() {
   app.get('/api/health', (req, res) => {
     res.json({ data: { status: 'ok' } });
   });
+
+  app.use('/api/branches', branchesRouter);
 
   // These two stay last: every route must be registered above them.
   app.use(notFound);

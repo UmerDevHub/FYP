@@ -45,7 +45,7 @@ One line per rule, with the date and the mistake that caused it.
 
 ## Exceptions to the patterns
 Every exception must be written here so that it stays an exception.
-- (nothing yet)
+- S1: the branches module has no service file: it only lists active branches, with no business rule (apps/api/CLAUDE.md allows this).
 
 ## Notes for the final report
 - S0: Express 5 passes a start-up error such as a port in use to the listen callback; ignoring it made the API stop without a message. server.js now throws it.

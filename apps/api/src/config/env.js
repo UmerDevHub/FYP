@@ -6,8 +6,8 @@ const REQUIRED_NAMES = [
   'JWT_ACCESS_SECRET',
 ];
 
-// The only place that reads the environment. Everything else imports the object this returns.
-export function loadEnv(source = process.env) {
+// Checks a set of environment values and returns them as one plain object.
+export function loadEnv(source) {
   const missingNames = REQUIRED_NAMES.filter((name) => !source[name]);
   if (missingNames.length > 0) {
     throw new Error(
@@ -24,3 +24,16 @@ export function loadEnv(source = process.env) {
     jwtAccessSecret: source.JWT_ACCESS_SECRET,
   });
 }
+
+function loadEnvOrStop() {
+  try {
+    return loadEnv(process.env);
+  } catch (error) {
+    // A missing setting is a set-up mistake, not a crash: show one clear line instead of a stack trace.
+    console.error(error.message);
+    process.exit(1);
+  }
+}
+
+// The only place that reads the environment. Every other file imports this object.
+export const env = loadEnvOrStop();

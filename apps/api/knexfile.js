@@ -1,6 +1,4 @@
-import { loadEnv } from './src/config/env.js';
-
-const env = loadEnv();
+import { env } from './src/config/env.js';
 
 // The plain configuration for migrations and seeds: no camelCase conversion, so
 // migration files use the real snake_case column names.

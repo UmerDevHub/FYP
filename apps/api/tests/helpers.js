@@ -1,13 +1,13 @@
-import { createDb } from '../src/config/db.js';
-import { loadEnv } from '../src/config/env.js';
+import { db } from '../src/config/db.js';
 
-export const testDb = createDb(loadEnv().testDatabaseUrl);
+// In tests the app's own connection points at the _test database (see vitest.config.js).
+export const testDb = db;
 
 let counter = 0;
 
-export async function makeBranch(name = `Test branch ${++counter}`) {
+export async function makeBranch({ name = `Test branch ${++counter}`, isActive = true } = {}) {
   const [branch] = await testDb('branches')
-    .insert({ name, city: 'Wah Cantt', address: 'Test address' })
+    .insert({ name, city: 'Wah Cantt', address: 'Test address', isActive })
     .returning('*');
   return branch;
 }
