@@ -4,11 +4,12 @@ Claude reads this file at the start of every session and updates it at the end o
 Keep each line short. Newest slice on top inside each section.
 
 ## Now
-- Current slice: S3 done (28 November 2026). Next: S4 Inspection.
+- Current slice: S4 done (28 November 2026). Next: S5 Approval and listing.
 - Before a real server: lib/mailer.js must stop printing reset links (they hold a secret token) and send real e-mail.
 - S0 is still open for Habib: S0-13 fresh clone.
 
 ## Done
+- S4 done: migration 003 and the 24 checklist items, files helper (first bytes, random names, uploads folder), inspections (start, save draft, add photo with progress, submit with the list of what is missing, manager notified), GET /api/vehicles/manage; screens Inspections (cars waiting, queue with tabs) and the inspection form (checklist, notes, photos, history). No tests (Umer's decision).
 - S3 done: migration 002, transitions.js and changeStatus, sell requests (send, my list, branch list, accept with 7-day expiry, reject with reason, notifications), arrival from a request or walk-in in one transaction; screens Sell your car, My requests, staff Sell requests (tabs, accept, reject dialog) and the arrival form with the plate. No tests (Umer's decision).
 - S2 done: register, login with lock, refresh with rotation, logout, forgot and reset password, my account, change password, notifications; AuthProvider, guards, Log in, Register, Forgot, Reset, My account and Notifications pages. Tests stopped at S2-15 by Umer's decision.
 - S1 done: env check, Knex and Supabase connection, ApiError and one error handler, shared roles, statuses, LIMITS and schemas, migration 001 (6 tables), seed and demo:reset, tests on vehicle360_test, GET /api/branches, design tokens and fonts, UI kit (ui.jsx, feedback.jsx, vehicle.jsx), format.js, api.js, three layouts, /kit. 49 tests pass.
@@ -67,6 +68,8 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: react-hook-form 7.92.0, @hookform/resolvers 7.0.9 (the forms use the shared Zod schemas) and @tanstack/react-query 5.108.4. api.js only refreshes after a 401 when a token was sent, so a wrong login shows the server's own message (Proposal).
 - S2: when the server cannot be reached or answers something that is not JSON, the screen says "We could not reach the server. Check your connection and try again." instead of browser text (Proposal, plain-copy). The menu has a plain "Notifications" link, no counter (slice S2-14).
 - From S2-15 on: Umer decided to write and run no more automated tests and to skip browser walk-throughs, to save time. The existing tests stay. Risk: NFR-TS-01 asks for tests of every status change, and the book says never cut tests (Umer's decision).
+- S4: GET /api/vehicles/manage was built in S4 (planned for S5), because staff need the received cars to start an inspection (Proposal).
+- S4: photos are sent one at a time, so each shows its own progress; the inspection form does not yet ask before leaving with unsaved answers (Proposal: add in S9).
 - Code style (Umer): beginner friendly; fewer lines are good, but no clever one-line shortcuts. Prefer a plain if.
 - S3: the server writes dates in messages through lib/formatForPeople.js (Pakistan time); staff lists show the customer's name, phone and e-mail because staff need them for the work (NFR-SC-08).
 

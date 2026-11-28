@@ -29,7 +29,10 @@ export function CustomerLayout() {
 
 // The staff menu grows slice by slice. Only sales staff record arrivals (FR-SS-01).
 function getStaffLinks(role) {
-  const links = [{ to: '/staff/sell-requests', label: 'Sell requests' }];
+  const links = [
+    { to: '/staff/sell-requests', label: 'Sell requests' },
+    { to: '/staff/inspections', label: 'Inspections' },
+  ];
   if (role === ROLE.SALES_STAFF) {
     links.push({ to: '/staff/arrivals/new', label: 'Record a walk-in' });
   }

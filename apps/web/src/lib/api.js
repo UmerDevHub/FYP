@@ -105,3 +105,40 @@ export async function restoreSession() {
   const session = await refreshAccessToken();
   return session ? session.user : null;
 }
+
+// Sends a file and reports how far the upload is (NFR-PF-03: the user sees the progress).
+// fetch cannot report upload progress, so this one function uses XMLHttpRequest instead.
+// onProgress gets a number from 0 to 100.
+export function uploadWithProgress(path, formData, onProgress) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open('POST', `${BASE_URL}${path}`);
+    request.withCredentials = true;
+    if (accessToken) {
+      request.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+    }
+
+    request.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        onProgress(Math.round((event.loaded / event.total) * 100));
+      }
+    };
+    request.onerror = () => reject(new ApiRequestError(0, NO_SERVER_MESSAGE));
+    request.onload = () => {
+      let answer;
+      try {
+        answer = JSON.parse(request.responseText);
+      } catch {
+        reject(new ApiRequestError(request.status, NO_SERVER_MESSAGE));
+        return;
+      }
+      if (request.status >= 400) {
+        reject(new ApiRequestError(request.status, answer.error.message, answer.error.details));
+        return;
+      }
+      resolve(answer);
+    };
+
+    request.send(formData);
+  });
+}

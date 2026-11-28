@@ -7,6 +7,8 @@ import ForgotPasswordPage from '../features/auth/ForgotPasswordPage.jsx';
 import LoginPage from '../features/auth/LoginPage.jsx';
 import RegisterPage from '../features/auth/RegisterPage.jsx';
 import ResetPasswordPage from '../features/auth/ResetPasswordPage.jsx';
+import InspectionPage from '../features/inspections/InspectionPage.jsx';
+import InspectionsPage from '../features/inspections/InspectionsPage.jsx';
 import MyRequestsPage from '../features/sell/MyRequestsPage.jsx';
 import SellYourCarPage from '../features/sell/SellYourCarPage.jsx';
 import ArrivalPage from '../features/staff/ArrivalPage.jsx';
@@ -80,6 +82,11 @@ const router = createBrowserRouter([
           { path: 'staff', element: <Navigate to="/staff/sell-requests" replace /> },
           { path: 'staff/sell-requests', element: guard(<SellRequestsPage />, BRANCH_STAFF) },
           { path: 'staff/arrivals/new', element: guard(<ArrivalPage />, [ROLE.SALES_STAFF]) },
+          { path: 'staff/inspections', element: guard(<InspectionsPage />, BRANCH_STAFF) },
+          {
+            path: 'staff/inspections/:inspectionId',
+            element: guard(<InspectionPage />, BRANCH_STAFF),
+          },
         ],
       },
       ...developmentRoutes,
