@@ -9,23 +9,38 @@ export const ROLE = {
 };
 export const ROLES = Object.values(ROLE);
 
-// A-03 and Table 5.6.
-export const SELL_REQUEST_STATUSES = ['pending', 'accepted', 'rejected', 'expired', 'completed'];
+// A-03 and Table 5.6. Use SELL_REQUEST_STATUS.PENDING in code.
+export const SELL_REQUEST_STATUS = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+  EXPIRED: 'expired',
+  COMPLETED: 'completed',
+};
+export const SELL_REQUEST_STATUSES = Object.values(SELL_REQUEST_STATUS);
 
 // FR-AC-01, plus rejected (A-02). booked, sold and delivered are built later.
-export const VEHICLE_STATUSES = [
-  'received',
-  'under_inspection',
-  'reconditioning',
-  'ready_for_sale',
-  'booked',
-  'sold',
-  'delivered',
-  'rejected',
-];
+export const VEHICLE_STATUS = {
+  RECEIVED: 'received',
+  UNDER_INSPECTION: 'under_inspection',
+  RECONDITIONING: 'reconditioning',
+  READY_FOR_SALE: 'ready_for_sale',
+  BOOKED: 'booked',
+  SOLD: 'sold',
+  DELIVERED: 'delivered',
+  REJECTED: 'rejected',
+};
+export const VEHICLE_STATUSES = Object.values(VEHICLE_STATUS);
 
 // Table 5.7.
-export const INSPECTION_STATUSES = ['draft', 'submitted', 'approved', 'returned', 'rejected'];
+export const INSPECTION_STATUS = {
+  DRAFT: 'draft',
+  SUBMITTED: 'submitted',
+  APPROVED: 'approved',
+  RETURNED: 'returned',
+  REJECTED: 'rejected',
+};
+export const INSPECTION_STATUSES = Object.values(INSPECTION_STATUS);
 
 // Assumption: the SRDS does not list fuel or transmission types.
 export const FUEL_TYPES = ['petrol', 'diesel', 'hybrid', 'electric', 'cng'];
