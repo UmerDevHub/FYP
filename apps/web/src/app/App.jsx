@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
+import TokensPage from './TokensPage.jsx';
 
 function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/tokens" element={<TokensPage />} />
       </Routes>
     </BrowserRouter>
   );

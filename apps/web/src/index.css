@@ -1,1 +1,86 @@
 @import 'tailwindcss';
+
+/*
+  The design tokens of docs/design.md. Each namespace starts with "initial", which removes
+  Tailwind's own values: only these colours, fonts, sizes, spaces and corners can be used.
+*/
+@theme {
+  --color-*: initial;
+  --color-petrol: #0e3a4a;
+  --color-plate: #f3c13a;
+  --color-ink: #17262e;
+  --color-muted: #4a5b64;
+  --color-paper: #f4f5f3;
+  --color-line: #d3d9db;
+  --color-petrol-tint: #e4eef2;
+  --color-plate-tint: #fcf3d6;
+  --color-pass: #1f7a4d;
+  --color-warn: #8f5400;
+  --color-fail: #b3261e;
+  --color-info: #1b5f8a;
+
+  --font-*: initial;
+  --font-heading: 'Barlow Semi Condensed', sans-serif;
+  --font-body: 'Source Sans 3', sans-serif;
+
+  --text-*: initial;
+  --text-title: 36px;
+  --text-section: 26px;
+  --text-card: 20px;
+  --text-body: 17px;
+  --text-body--line-height: 1.55;
+  --text-small: 14px;
+  --text-price: 24px;
+  --text-price-large: 36px;
+
+  /* Spacing on a 4 px base: only 4, 8, 12, 16, 24, 32 and 48 exist (p-1 is 4 px, p-12 is 48 px). */
+  --spacing-*: initial;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+
+  --radius-*: initial;
+  --radius-control: 4px;
+  --radius-plate: 3px;
+
+  --shadow-*: initial;
+  --shadow-dialog: 0 8px 24px rgb(23 38 46 / 0.18);
+
+  --container-page: 1152px;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    color: var(--color-petrol);
+  }
+
+  /* The focus outline is never removed: keyboard users must always see where they are. */
+  :focus-visible {
+    outline: 2px solid var(--color-petrol);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
