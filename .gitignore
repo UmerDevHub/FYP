@@ -29,3 +29,6 @@ npm-debug.log*
 *.swo
 .DS_Store
 Thumbs.db
+
+# Playwright notes and screenshots from browser checks
+.playwright-mcp/
