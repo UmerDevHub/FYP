@@ -17,8 +17,12 @@ Vehicle 360 is a multi-branch car dealership system for AK Motors, built as a fi
    ```
    npm install
    ```
-3. Create the two databases (see "Create the databases" below).
-4. Copy `apps/api/.env.example` to `apps/api/.env`. In `apps/api/.env`, replace each `CHANGE_ME` with your own value. Never commit this file.
+3. Set up the two databases (see "The databases" below).
+4. Copy `apps/api/.env.example` to `apps/api/.env`. In `apps/api/.env`, put your own database addresses and replace each `CHANGE_ME`. Never commit this file.
+5. Create the tables and the demo data:
+   ```
+   npm run demo:reset
+   ```
 
 ## Run
 
@@ -37,7 +41,7 @@ npm run dev
 npm test
 ```
 
-In slice S0 the tests need nothing else. From slice S1 they need the test database `vehicle360_test`.
+The tests use the test database in `TEST_DATABASE_URL`. They create its tables by themselves and empty them before each test file. They refuse to run unless the database name ends in `_test`.
 
 To check and format the code:
 
@@ -46,18 +50,27 @@ npm run lint
 npm run format
 ```
 
-## Create the databases
+## The databases
 
-You need two databases: `vehicle360_dev` for development and `vehicle360_test` for tests. The test database name must end in `_test`.
+You need two PostgreSQL databases: one for development and one for tests. The test database name must end in `_test`.
 
-With pgAdmin:
+**Each person needs their own test database.** The tests empty every table, so two people running tests on the same database at the same time break each other's runs.
 
-1. Open pgAdmin and, in the Object Explorer on the left, open Servers and then your PostgreSQL server. Enter your password if asked.
-2. Right-click Databases, then choose Create, then Database.
-3. In Database, type `vehicle360_dev` and click Save.
-4. Repeat for `vehicle360_test`.
+### With Supabase (what Umer uses)
 
-With psql tools in PowerShell (change `18` to your PostgreSQL version; type your password when asked):
+1. In Supabase, open your project, then Connect. Copy the **session pooler** address (port 5432), not the transaction pooler (port 6543): migrations need the session mode.
+2. Use that address as `DATABASE_URL`. The database name at the end is `postgres`.
+3. Create the test database once. In Supabase, open the SQL Editor and run:
+   ```
+   CREATE DATABASE vehicle360_test;
+   ```
+4. Use the same address as `TEST_DATABASE_URL`, with `/vehicle360_test` at the end instead of `/postgres`.
+
+Tests on Supabase need the internet and are a little slower than on your own laptop.
+
+### With PostgreSQL on your laptop
+
+Create `vehicle360_dev` and `vehicle360_test` in pgAdmin (right-click Databases, then Create, then Database), or in PowerShell (change `18` to your PostgreSQL version; type your password when asked):
 
 ```
 & "C:\Program Files\PostgreSQL\18\bin\createdb.exe" -U postgres vehicle360_dev

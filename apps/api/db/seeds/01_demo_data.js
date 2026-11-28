@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { ROLE } from '@v360/shared/constants';
 
 // Development only. This password is written in the README on purpose: it protects nothing real.
 const DEMO_PASSWORD = 'Vehicle360demo';
@@ -37,29 +38,29 @@ export async function seed(knex) {
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, BCRYPT_COST);
   await knex('users').insert(
     [
-      { name: 'Admin', email: 'admin@vehicle360.test', role: 'admin' },
+      { name: 'Admin', email: 'admin@vehicle360.test', role: ROLE.ADMIN },
       {
         name: 'Manager Branch 1',
         email: 'manager1@vehicle360.test',
-        role: 'branch_manager',
+        role: ROLE.BRANCH_MANAGER,
         branch_id: branch1,
       },
       {
         name: 'Staff Branch 1',
         email: 'staff1@vehicle360.test',
-        role: 'sales_staff',
+        role: ROLE.SALES_STAFF,
         branch_id: branch1,
       },
       {
         name: 'Staff Branch 2',
         email: 'staff2@vehicle360.test',
-        role: 'sales_staff',
+        role: ROLE.SALES_STAFF,
         branch_id: branch2,
       },
       {
         name: 'Demo Customer',
         email: 'customer@vehicle360.test',
-        role: 'customer',
+        role: ROLE.CUSTOMER,
         phone: '03001234567',
       },
     ].map((user) => ({ ...user, password_hash: passwordHash })),
