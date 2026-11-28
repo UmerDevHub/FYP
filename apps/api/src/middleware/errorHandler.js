@@ -10,6 +10,12 @@ const CONSTRAINT_ERRORS = {
     409,
     'An account with this e-mail already exists. Log in, or use another e-mail.',
   ],
+  vehicles_registration_unique: [
+    409,
+    'This registration number is already used by another vehicle.',
+  ],
+  vehicles_chassis_unique: [409, 'This chassis number is already used by another vehicle.'],
+  vehicles_sell_request_id_key: [409, 'A car has already arrived for this sell request.'],
 };
 
 function toApiError(error) {

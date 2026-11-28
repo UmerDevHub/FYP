@@ -7,6 +7,8 @@ import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { createAuthRouter } from './modules/auth/auth.routes.js';
 import { branchesRouter } from './modules/branches/branches.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
+import { sellRequestsRouter } from './modules/sell-requests/sellRequests.routes.js';
+import { vehiclesRouter } from './modules/vehicles/vehicles.routes.js';
 
 export function createApp() {
   const app = express();
@@ -27,6 +29,8 @@ export function createApp() {
   app.use('/api/auth', createAuthRouter());
   app.use('/api/branches', branchesRouter);
   app.use('/api/notifications', notificationsRouter);
+  app.use('/api/sell-requests', sellRequestsRouter);
+  app.use('/api/vehicles', vehiclesRouter);
 
   // These two stay last: every route must be registered above them.
   app.use(notFound);
