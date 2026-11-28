@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { emailSchema, pagingSchema, passwordSchema, phoneSchema } from '../src/schemas.js';
+import {
+  emailSchema,
+  nameSchema,
+  pagingSchema,
+  passwordSchema,
+  phoneSchema,
+  registerSchema,
+} from '../src/schemas.js';
 
 function isAccepted(schema, value) {
   return schema.safeParse(value).success;
@@ -73,5 +80,43 @@ describe('pagingSchema', () => {
     expect(isAccepted(pagingSchema, { limit: '50' })).toBe(true);
     expect(isAccepted(pagingSchema, { limit: '0' })).toBe(false);
     expect(isAccepted(pagingSchema, { limit: '51' })).toBe(false);
+  });
+});
+
+describe('nameSchema', () => {
+  it('accepts 2 characters and refuses 1', () => {
+    expect(isAccepted(nameSchema, 'Al')).toBe(true);
+    expect(isAccepted(nameSchema, 'A')).toBe(false);
+  });
+
+  it('accepts 100 characters and refuses 101', () => {
+    expect(isAccepted(nameSchema, 'a'.repeat(100))).toBe(true);
+    expect(isAccepted(nameSchema, 'a'.repeat(101))).toBe(false);
+  });
+});
+
+describe('registerSchema', () => {
+  const validForm = {
+    name: 'Ali Khan',
+    email: 'Ali@Example.com',
+    phone: '0300-1234567',
+    password: 'abcdef12',
+  };
+
+  it('accepts a complete form and cleans the e-mail and phone', () => {
+    expect(registerSchema.parse(validForm)).toEqual({
+      name: 'Ali Khan',
+      email: 'ali@example.com',
+      phone: '03001234567',
+      password: 'abcdef12',
+    });
+  });
+
+  it('drops a role sent with the form (FR-AU-01: always Customer)', () => {
+    expect(registerSchema.parse({ ...validForm, role: 'admin' })).not.toHaveProperty('role');
+  });
+
+  it('needs every field', () => {
+    expect(isAccepted(registerSchema, { ...validForm, phone: undefined })).toBe(false);
   });
 });

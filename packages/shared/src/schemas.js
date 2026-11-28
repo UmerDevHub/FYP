@@ -35,3 +35,17 @@ export const pagingSchema = z.object({
     .max(50, 'Show at most 50 items a page.')
     .default(12),
 });
+
+export const nameSchema = z
+  .string()
+  .trim()
+  .min(2, 'Enter your name.')
+  .max(100, 'Use at most 100 characters for your name.');
+
+// FR-AU-01: name, e-mail, phone and password. A role is not part of the form: anything else sent is dropped.
+export const registerSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  phone: phoneSchema,
+  password: passwordSchema,
+});

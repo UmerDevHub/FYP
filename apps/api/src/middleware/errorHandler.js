@@ -4,8 +4,20 @@ export function notFound(req, res, next) {
   next(new ApiError(404, 'This address does not exist.'));
 }
 
+// A database rule that the user broke, mapped to a plain message. The constraint name never leaves the server.
+const CONSTRAINT_ERRORS = {
+  users_email_unique: [
+    409,
+    'An account with this e-mail already exists. Log in, or use another e-mail.',
+  ],
+};
+
 function toApiError(error) {
   if (error instanceof ApiError) return error;
+  if (CONSTRAINT_ERRORS[error.constraint]) {
+    const [statusCode, message] = CONSTRAINT_ERRORS[error.constraint];
+    return new ApiError(statusCode, message);
+  }
   // express.json() marks a body that is not valid JSON with this type: the client sent it wrong.
   if (error.type === 'entity.parse.failed') {
     return new ApiError(400, 'The request body is not valid JSON.');
