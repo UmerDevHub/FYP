@@ -13,7 +13,7 @@ Keep each line short. Newest slice on top inside each section.
 ## Decisions
 Write what was decided and why, in one line each. Mark the source: SRDS, Proposal, or Assumption.
 - S0: versions from package-lock.json: Node 24.12.0 (.nvmrc 24), express 5.3.0, vite 8.4.0, react 19.3.1, react-router 8.5.3, tailwindcss 4.3.5, vitest 5.1.2 (Proposal).
-- S0: PostgreSQL 18 on Umer's laptop; the slice was tested with 16 (Proposal).
+- S1: development and test databases are on Supabase (PostgreSQL), so PostgreSQL 18 on the laptop is not used (Proposal).
 - S0: the API runs on port 3100, because port 3000 is used by another project on Umer's laptop; prompt E-03 says 3000, use 3100 (Proposal).
 - S0: LIMITS: 7 days to arrive (A-03), 4 inspection photos (A-06), 5 failed logins (A-18) (SRDS).
 - S0: the old FastAPI service is saved on branch archive/python-service and removed; not in the 35% (Proposal).
@@ -33,6 +33,7 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: customers and admins have no branch; sales staff and managers must have one (Assumption: data-model.md says "role and branch_id agree").
 - S1: bcryptjs 3.0.3 hashes passwords (cost 12); pure JavaScript, so no C++ build tools on Windows (Proposal).
 - S1: seed branch names Branch 1 to 3 (Wah Cantt, Rawalpindi, Islamabad) are placeholders (Assumption).
+- S1: the test database vehicle360_test lives in Supabase, not on the laptop; tests are slower and need the internet (Proposal; Umer has no local PostgreSQL password).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.

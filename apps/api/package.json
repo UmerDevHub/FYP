@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --watch --env-file-if-exists=.env src/server.js",
     "start": "node --env-file-if-exists=.env src/server.js",
-    "test": "vitest run",
+    "test": "node --env-file-if-exists=.env ../../node_modules/vitest/vitest.mjs run",
     "migrate": "node --env-file-if-exists=.env ../../node_modules/knex/bin/cli.js migrate:latest",
     "seed": "node --env-file-if-exists=.env ../../node_modules/knex/bin/cli.js seed:run",
     "demo:reset": "node --env-file-if-exists=.env ../../node_modules/knex/bin/cli.js migrate:rollback --all && npm run migrate && npm run seed"
