@@ -33,6 +33,12 @@ export function AuthProvider({ children }) {
     setUser(session.user);
   }
 
+  // The server already ended the login (for example after a password reset): forget it here too.
+  function endSession() {
+    setAccessToken(null);
+    setUser(null);
+  }
+
   // A full reload at the home page: it wipes everything the old user's pages kept in memory, and no
   // guarded page is left open to send the person to /login on its way out.
   async function logOut() {
@@ -42,7 +48,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isChecking, startSession, logOut }}>
+    <AuthContext.Provider value={{ user, isChecking, startSession, endSession, logOut }}>
       {children}
     </AuthContext.Provider>
   );

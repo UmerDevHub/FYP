@@ -1,8 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ROLE } from '@v360/shared/constants';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
+import ForgotPasswordPage from '../features/auth/ForgotPasswordPage.jsx';
 import LoginPage from '../features/auth/LoginPage.jsx';
 import RegisterPage from '../features/auth/RegisterPage.jsx';
+import ResetPasswordPage from '../features/auth/ResetPasswordPage.jsx';
 import { AuthProvider } from './AuthProvider.jsx';
 import { RequireLogin, RequireRole } from './guards.jsx';
 import KitPage from './KitPage.jsx';
@@ -40,6 +42,8 @@ const router = createBrowserRouter([
           { index: true, element: <LayoutNamePage layoutName="Public" /> },
           { path: 'login', Component: LoginPage },
           { path: 'register', Component: RegisterPage },
+          { path: 'forgot-password', Component: ForgotPasswordPage },
+          { path: 'reset-password', Component: ResetPasswordPage },
         ],
       },
       {

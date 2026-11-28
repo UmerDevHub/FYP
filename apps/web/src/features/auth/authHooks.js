@@ -26,3 +26,15 @@ export function showServerFieldErrors(error, setError) {
   }
   return fieldMessages.length > 0;
 }
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (form) => api('/auth/forgot-password', { method: 'POST', body: form }),
+  });
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: (form) => api('/auth/reset-password', { method: 'POST', body: form }),
+  });
+}

@@ -39,6 +39,11 @@ export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md">
       <h1 className="text-title">Log in</h1>
+      {location.state?.message && (
+        <p role="status" className="mt-4 font-semibold text-pass">
+          {location.state.message}
+        </p>
+      )}
       <form onSubmit={handleSubmit(sendForm)} noValidate className="mt-6 flex flex-col gap-4">
         <Field
           label="E-mail"
