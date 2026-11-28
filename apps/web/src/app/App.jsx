@@ -1,7 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { CustomerLayout, PublicLayout, StaffLayout } from './layouts.jsx';
 import { ErrorPage, LayoutNamePage, NotFoundPage } from './pages.jsx';
-import TokensPage from './TokensPage.jsx';
+import KitPage from './KitPage.jsx';
+
+// The kit page is for the team only: a production build has no /kit address.
+const developmentRoutes = import.meta.env.DEV ? [{ path: 'kit', Component: KitPage }] : [];
 
 // Every address of the app. A layout route has no path: it only wraps the pages inside it.
 const router = createBrowserRouter([
@@ -23,7 +26,7 @@ const router = createBrowserRouter([
         Component: StaffLayout,
         children: [{ path: 'staff', element: <LayoutNamePage layoutName="Staff" /> }],
       },
-      { path: 'tokens', Component: TokensPage },
+      ...developmentRoutes,
       { path: '*', Component: NotFoundPage },
     ],
   },
