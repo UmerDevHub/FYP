@@ -63,3 +63,16 @@ export const resetPasswordSchema = z.object({
   token: z.string().min(1, 'This link is not complete. Open the link from the e-mail again.'),
   password: passwordSchema,
 });
+
+// FR-AU-05: a user may change only their name and phone. Anything else sent is dropped.
+export const updateMeSchema = z.object({ name: nameSchema, phone: phoneSchema });
+
+export const changePasswordSchema = z.object({
+  oldPassword: z.string().min(1, 'Enter your old password.'),
+  newPassword: passwordSchema,
+});
+
+// An id in the address, such as /api/notifications/12/read.
+export const idParamSchema = z.object({
+  id: z.coerce.number().int().min(1, 'This address has no valid number.'),
+});

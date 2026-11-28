@@ -60,6 +60,7 @@ Questions for the supervisor or for AK Motors. Do not guess these in code.
 - S2: helmet 8.3.0, cors 2.8.6 (only WEB_ORIGIN, with credentials) and express-rate-limit 8.7.5 (20 requests per 15 minutes on login and register; forgot-password in S2-08) (Proposal, slice S2).
 - S2: staff of another branch get 403 "This record belongs to another branch."; a customer is refused by assertBranchAccess too (deny by default) (slice S2, apps/api/CLAUDE.md).
 - S2: lib/mailer.js prints e-mails to the server console and keeps them in memory; real sending is not built. Reset links last 60 minutes, work once and end every login of the user (slice S2).
+- S2: another user's notification answers 404, not 403, so nobody learns that it exists (slice S2-09 asked to choose). Change password ends every other login and keeps the device that asked (Proposal).
 
 ## Rules added to CLAUDE.md files
 One line per rule, with the date and the mistake that caused it.

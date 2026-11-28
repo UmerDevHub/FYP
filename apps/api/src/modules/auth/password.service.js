@@ -4,14 +4,16 @@ import { db } from '../../config/db.js';
 import { env } from '../../config/env.js';
 import { ApiError } from '../../lib/ApiError.js';
 import { sendEmail } from '../../lib/mailer.js';
-import { hashPassword } from '../../lib/password.js';
+import { hashPassword, isPasswordCorrect } from '../../lib/password.js';
 import { createRandomToken, hashToken } from '../../lib/tokens.js';
 import {
   findActiveUserByEmail,
+  findPasswordHash,
   findPasswordResetForUpdate,
   insertPasswordReset,
   markPasswordResetUsed,
   revokeAllRefreshTokens,
+  revokeOtherRefreshTokens,
   updatePasswordHash,
 } from './auth.repository.js';
 
@@ -67,4 +69,26 @@ export async function resetPassword(form, now = Date.now()) {
   });
   if (!isReset) throw new ApiError(400, LINK_EXPIRED_MESSAGE);
   return 'Your password has been changed. Log in with your new password.';
+}
+
+// FR-AU-05: the old password is checked first. Every other login of the user ends, so a person
+// who knew the old password is logged out; the device that asked stays logged in.
+export async function changePassword(userId, form, currentRefreshToken, now = Date.now()) {
+  const isOldPasswordRight = await isPasswordCorrect(
+    form.oldPassword,
+    await findPasswordHash(userId),
+  );
+  if (!isOldPasswordRight) throw new ApiError(400, 'Your old password is not right.');
+
+  const passwordHash = await hashPassword(form.newPassword);
+  await db.transaction(async (trx) => {
+    await updatePasswordHash(trx, userId, passwordHash);
+    await revokeOtherRefreshTokens(
+      trx,
+      userId,
+      hashToken(currentRefreshToken ?? ''),
+      new Date(now),
+    );
+  });
+  return 'Your password has been changed.';
 }

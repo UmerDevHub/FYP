@@ -81,3 +81,29 @@ export function updatePasswordHash(trx, userId, passwordHash) {
 export function revokeAllRefreshTokens(trx, userId, revokedAt) {
   return trx('refreshTokens').where({ userId, revokedAt: null }).update({ revokedAt });
 }
+
+export function findUserById(userId) {
+  return db('users').select(PUBLIC_USER_COLUMNS).where({ id: userId }).first();
+}
+
+// Only these two columns can change here (FR-AU-05).
+export async function updateNameAndPhone(userId, { name, phone }) {
+  const [user] = await db('users')
+    .where({ id: userId })
+    .update({ name, phone, updatedAt: db.fn.now() })
+    .returning(PUBLIC_USER_COLUMNS);
+  return user;
+}
+
+export async function findPasswordHash(userId) {
+  const user = await db('users').select(['passwordHash']).where({ id: userId }).first();
+  return user.passwordHash;
+}
+
+// Ends every login of the user except the one with this token (the device that asked).
+export function revokeOtherRefreshTokens(trx, userId, keptTokenHash, revokedAt) {
+  return trx('refreshTokens')
+    .where({ userId, revokedAt: null })
+    .whereNot({ tokenHash: keptTokenHash })
+    .update({ revokedAt });
+}

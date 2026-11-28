@@ -1,14 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import {
+  changePasswordSchema,
   emailSchema,
   nameSchema,
   pagingSchema,
   passwordSchema,
   phoneSchema,
   forgotPasswordSchema,
+  idParamSchema,
   loginSchema,
   registerSchema,
   resetPasswordSchema,
+  updateMeSchema,
 } from '../src/schemas.js';
 
 function isAccepted(schema, value) {
@@ -151,5 +154,42 @@ describe('resetPasswordSchema', () => {
     expect(isAccepted(resetPasswordSchema, { token: 'abc', password: 'newpass12' })).toBe(true);
     expect(isAccepted(resetPasswordSchema, { token: '', password: 'newpass12' })).toBe(false);
     expect(isAccepted(resetPasswordSchema, { token: 'abc', password: 'short' })).toBe(false);
+  });
+});
+
+describe('updateMeSchema (FR-AU-05)', () => {
+  it('keeps only the name and phone: role, branch and e-mail are dropped', () => {
+    const form = {
+      name: 'Ali',
+      phone: '0300-1234567',
+      role: 'admin',
+      branchId: 1,
+      email: 'x@y.pk',
+    };
+
+    expect(updateMeSchema.parse(form)).toEqual({ name: 'Ali', phone: '03001234567' });
+  });
+});
+
+describe('changePasswordSchema (FR-AU-05)', () => {
+  it('needs the old password and a new one that follows the rules', () => {
+    expect(isAccepted(changePasswordSchema, { oldPassword: 'x', newPassword: 'newpass12' })).toBe(
+      true,
+    );
+    expect(isAccepted(changePasswordSchema, { oldPassword: '', newPassword: 'newpass12' })).toBe(
+      false,
+    );
+    expect(isAccepted(changePasswordSchema, { oldPassword: 'x', newPassword: 'short' })).toBe(
+      false,
+    );
+  });
+});
+
+describe('idParamSchema', () => {
+  it('reads a positive whole number from the address and refuses anything else', () => {
+    expect(idParamSchema.parse({ id: '12' })).toEqual({ id: 12 });
+    expect(isAccepted(idParamSchema, { id: '1' })).toBe(true);
+    expect(isAccepted(idParamSchema, { id: '0' })).toBe(false);
+    expect(isAccepted(idParamSchema, { id: 'abc' })).toBe(false);
   });
 });

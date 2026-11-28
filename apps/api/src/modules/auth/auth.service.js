@@ -8,6 +8,7 @@ import {
   addFailedLogin,
   clearFailedLogins,
   findActiveUserById,
+  findUserById,
   findRefreshTokenForUpdate,
   findUserForLogin,
   insertRefreshToken,
@@ -15,6 +16,7 @@ import {
   lockUser,
   revokeRefreshToken,
   revokeTokenFamily,
+  updateNameAndPhone,
 } from './auth.repository.js';
 
 const MINUTE = 60 * 1000;
@@ -149,4 +151,13 @@ export async function logOut(refreshToken, now = Date.now()) {
       await revokeRefreshToken(trx, stored.id, new Date(now));
     }
   });
+}
+
+// FR-AU-05: the user id comes from the token (req.user), never from the request.
+export function getMyDetails(userId) {
+  return findUserById(userId);
+}
+
+export function updateMyDetails(userId, details) {
+  return updateNameAndPhone(userId, details);
 }

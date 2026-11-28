@@ -1,16 +1,26 @@
 import { LIMITS } from '@v360/shared/constants';
 import {
+  changePasswordSchema,
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
   resetPasswordSchema,
+  updateMeSchema,
 } from '@v360/shared/schemas';
 import { Router } from 'express';
 import { env } from '../../config/env.js';
+import { authenticate } from '../../middleware/authenticate.js';
 import { createAuthRateLimit } from '../../middleware/rateLimit.js';
 import { validate } from '../../middleware/validate.js';
-import { logInUser, logOut, refreshSession, registerCustomer } from './auth.service.js';
-import { requestPasswordReset, resetPassword } from './password.service.js';
+import {
+  getMyDetails,
+  logInUser,
+  logOut,
+  refreshSession,
+  registerCustomer,
+  updateMyDetails,
+} from './auth.service.js';
+import { changePassword, requestPasswordReset, resetPassword } from './password.service.js';
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
 
@@ -80,6 +90,28 @@ export function createAuthRouter() {
     const message = await resetPassword(req.valid.body);
     res.json({ data: { message } });
   });
+
+  // Logged in: any role.
+  router.get('/me', authenticate, async (req, res) => {
+    res.json({ data: await getMyDetails(req.user.id) });
+  });
+
+  // Logged in: any role. Only name and phone change (the schema drops everything else).
+  router.patch('/me', authenticate, validate(updateMeSchema), async (req, res) => {
+    res.json({ data: await updateMyDetails(req.user.id, req.valid.body) });
+  });
+
+  // Logged in: any role. The refresh cookie shows which login to keep.
+  router.post(
+    '/change-password',
+    authenticate,
+    validate(changePasswordSchema),
+    async (req, res) => {
+      const currentToken = req.cookies[REFRESH_COOKIE_NAME];
+      const message = await changePassword(req.user.id, req.valid.body, currentToken);
+      res.json({ data: { message } });
+    },
+  );
 
   return router;
 }
