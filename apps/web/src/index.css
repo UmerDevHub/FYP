@@ -42,6 +42,8 @@
   --spacing-6: 24px;
   --spacing-8: 32px;
   --spacing-12: 48px;
+  /* The smallest height of anything you tap or click (docs/design.md: at least 44 px). */
+  --spacing-target: 44px;
 
   --radius-*: initial;
   --radius-control: 4px;

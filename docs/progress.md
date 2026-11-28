@@ -34,6 +34,7 @@ Write what was decided and why, in one line each. Mark the source: SRDS, Proposa
 - S1: bcryptjs 3.0.3 hashes passwords (cost 12); pure JavaScript, so no C++ build tools on Windows (Proposal).
 - S1: seed branch names Branch 1 to 3 (Wah Cantt, Rawalpindi, Islamabad) are placeholders (Assumption).
 - S1: the test database vehicle360_test lives in Supabase, not on the laptop; tests are slower and need the internet (Proposal; Umer has no local PostgreSQL password).
+- S1: a size token --spacing-target (44 px) for the smallest tap target, because the spacing scale has no 44 (Proposal, design.md asks for 44 px).
 
 ## Open questions
 Questions for the supervisor or for AK Motors. Do not guess these in code.

@@ -1,4 +1,6 @@
-// Temporary (S1-11): shows every token so it can be compared with docs/design.md. Remove after the check.
+// Temporary (S1-11, S1-12): shows every token and the first kit parts. The /kit page (S1-16) replaces it.
+import { Badge, Button, Card, Field, Select, Textarea } from '../components/ui.jsx';
+
 // Tailwind only builds classes it finds written out in full, so each class is spelled here.
 const SWATCHES = [
   { name: 'petrol', className: 'bg-petrol' },
@@ -38,6 +40,41 @@ export default function TokensPage() {
       <p className="text-small text-muted">Small 14 px, muted</p>
       <p className="font-heading text-price font-bold">Rs 5,400,000 (price 24 px)</p>
       <p className="font-heading text-price-large font-bold">Rs 5,400,000 (price 36 px)</p>
+
+      <h2 className="mt-8 text-section">Kit, part one</h2>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button>Send sell request</Button>
+        <Button variant="accent">Approve and list</Button>
+        <Button variant="secondary">Save draft</Button>
+        <Button variant="danger">Reject request</Button>
+        <Button isBusy>Saving</Button>
+        <Button disabled>Approve and list</Button>
+      </div>
+      <div className="mt-6 grid max-w-page gap-4 sm:grid-cols-2">
+        <Field label="Year" hint="The year the car was made." />
+        <Field label="Year" defaultValue="2031" error="Enter a year up to 2027." />
+        <Select
+          label="Branch"
+          options={[
+            { value: '1', label: 'Branch 1' },
+            { value: '2', label: 'Branch 2' },
+          ]}
+        />
+        <Field label="Registration number" disabled defaultValue="LEA-1234" />
+        <Textarea label="Description" hint="Say what the buyer should know." />
+      </div>
+      <div className="mt-6 flex flex-wrap gap-2">
+        <Badge>Pending</Badge>
+        <Badge tone="info">Accepted</Badge>
+        <Badge tone="pass">Good</Badge>
+        <Badge tone="warn">Fair</Badge>
+        <Badge tone="fail">Poor</Badge>
+      </div>
+      <div className="mt-6 max-w-page">
+        <Card>
+          <p className="p-4">A card is only for an object, such as a car.</p>
+        </Card>
+      </div>
     </main>
   );
 }
